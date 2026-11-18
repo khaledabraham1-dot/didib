@@ -84,7 +84,7 @@ export function Transmission({ delay = 0 }: { delay?: number }) {
       animate={{ x: [0, 0, -5, 4, -2, 0] }}
       transition={{ delay: delay + 1.85, duration: 0.35, times: [0, 0.01, 0.25, 0.5, 0.75, 1] }}
     >
-      <p className="label mb-5 flex items-center gap-3 text-ash">
+      <p className="label mb-5 flex max-w-[88vw] flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center text-ash">
         <motion.span
           className="inline-block size-1.5 bg-blood"
           animate={{ opacity: [1, 0.2, 1] }}

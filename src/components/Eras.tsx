@@ -42,7 +42,7 @@ function Disc({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
   const register = useContext(Vinyl3D);
   if (register) {
     return (
-      <div className="relative w-[min(58vw,30svh)] shrink-0 lg:w-[min(32vw,440px)]">
+      <div className="relative w-[min(58vw,30svh)] shrink-0 [@media(max-height:620px)]:w-[min(50vw,25svh)] lg:w-[min(32vw,440px)]">
         <button
           ref={(el) => register(era.n, el, spin)}
           type="button"
@@ -60,7 +60,7 @@ function Disc({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
   }
 
   return (
-    <div className="relative w-[min(58vw,30svh)] shrink-0 lg:w-[min(32vw,440px)]">
+    <div className="relative w-[min(58vw,30svh)] shrink-0 [@media(max-height:620px)]:w-[min(50vw,25svh)] lg:w-[min(32vw,440px)]">
       {/* halo qui bat au rythme réel du morceau (--beat, 0 à 1) */}
       <div
         className={cn("pointer-events-none absolute -inset-[14%] rounded-full transition-opacity duration-700", playing ? "opacity-100" : "opacity-0")}
@@ -127,9 +127,9 @@ function Card({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
         <p className="label text-brass">
           Ère {roman(era.n)} · {era.year}
         </p>
-        <h3 className="mt-2 font-display text-[clamp(34px,9vw,48px)] italic leading-[.95] tracking-[-.03em] lg:mt-3 lg:text-title">{era.title}</h3>
+        <h3 className="mt-2 font-display text-[clamp(28px,9vw,48px)] italic leading-[.95] tracking-[-.03em] lg:mt-3 lg:text-title">{era.title}</h3>
         <p className="mt-2 font-sans font-wide text-sm uppercase tracking-[.2em] text-ash">{era.kicker}</p>
-        <p className="mt-3 max-w-sm leading-snug text-ivory/80 lg:mt-6 lg:text-lg">{era.line}</p>
+        <p className="mt-3 max-w-sm leading-snug text-ivory/80 max-lg:[@media(max-height:700px)]:hidden lg:mt-6 lg:text-lg">{era.line}</p>
 
         {/* extrait officiel */}
         <button type="button" onClick={onClick} className="group mt-4 flex w-full max-w-sm cursor-pointer items-center gap-4 border hairline px-4 py-3 text-left transition-colors hover:border-brass" aria-pressed={playing}>
@@ -145,10 +145,10 @@ function Card({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
           </span>
         </button>
 
-        <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2 lg:mt-6">
+        <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1 max-lg:[@media(max-height:620px)]:hidden lg:mt-6">
           {stream(era.title).map((s) => (
             <li key={s.name}>
-              <a href={s.href} target="_blank" rel="noreferrer" className="label inline-flex items-center gap-1 text-ivory/70 transition-colors hover:text-brass">
+              <a href={s.href} target="_blank" rel="noreferrer" className="label inline-flex items-center gap-1 py-1.5 text-ivory/70 transition-colors hover:text-brass">
                 {s.name}
                 <ArrowUpRight className="size-3.5" aria-hidden />
                 <span className="sr-only"> : {era.title} (nouvel onglet)</span>
@@ -231,7 +231,7 @@ export function Eras() {
                 onClick={() => goTo(i)}
                 aria-label={`Ère ${roman(e.n)} : ${e.title}`}
                 aria-current={i === active ? "step" : undefined}
-                className="group flex cursor-pointer flex-col items-center gap-2 px-1.5 pt-2"
+                className="group flex min-w-6 cursor-pointer flex-col items-center gap-2 px-2 pt-2"
               >
                 <span className={cn("block w-2 origin-bottom transition-all duration-700 ease-[var(--ease-throne)]", i === 4 ? "bg-blood" : "bg-brass", i === active ? "h-9 lg:h-14" : "h-4 opacity-40 group-hover:h-6 group-hover:opacity-80 lg:h-6 lg:group-hover:h-9")} />
                 <span className={cn("font-display text-xs transition-colors", i === active ? "text-ivory" : "text-ash group-hover:text-ivory")}>{roman(e.n)}</span>

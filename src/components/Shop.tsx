@@ -21,7 +21,7 @@ export function Shop() {
           </div>
           <div className="flex flex-col items-start gap-4 md:items-end">
             <p className="label text-ash">Drop Nueva Era · en préparation</p>
-            <Button asChild variant="outline"><a href="#cour"><span className="relative z-10 inline-flex items-center gap-3">Être prévenu du drop<ArrowRight /></span></a></Button>
+            <Button asChild variant="outline" className="max-w-full px-5 sm:px-8"><a href="#cour"><span className="relative z-10 inline-flex items-center gap-3">Être prévenu du drop<ArrowRight /></span></a></Button>
           </div>
         </div>
         <ul className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
