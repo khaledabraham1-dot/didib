@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { SigneC } from "./SigneC";
 import { Mark } from "./Mark";
 import { lockScroll } from "@/lib/scroll";
 
 /*
  * Le sacre d'ouverture.
+ * 0. Le signe de la Conspiration : la main trace un C, éclair, « Bienvenue dans la Conspiration ».
  * 1. Les cinq piliers du trône se dressent.
  * 2. Le rideau noir se perce à la forme exacte du logo : la scène apparaît à travers les piliers.
  * 3. La découpe grandit jusqu'à ce que le pilier central avale l'écran.
@@ -22,7 +24,8 @@ const firstVisit = (() => {
 const play = firstVisit && !reduce;
 
 /** Délai (s) avant les animations d'entrée du héros. */
-export const INTRO = play ? 2.45 : 0.1;
+export const INTRO = play ? 4.0 : 0.1;
+const SIGN_MS = 1700, RISE_MS = 2800; // fin du signe, puis ouverture
 
 const MARK = 72; // taille du logo à l'écran, en px
 // Même géométrie que <Mark /> : la découpe épouse exactement le logo.
@@ -32,7 +35,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">${[12, 
 const MASK = `url("data:image/svg+xml,${encodeURIComponent(svg)}"), linear-gradient(#000 0 0)`;
 
 export function Loader() {
-  const [stage, setStage] = useState<"rise" | "open" | "done">(play ? "rise" : "done");
+  const [stage, setStage] = useState<"sign" | "rise" | "open" | "done">(play ? "sign" : "done");
   const ref = useRef<HTMLDivElement>(null);
   const pct = useRef<HTMLSpanElement>(null);
   const bar = useRef<HTMLSpanElement>(null);
@@ -40,22 +43,23 @@ export function Loader() {
   useEffect(() => {
     if (!play) return;
     lockScroll(true);
-    const t = setTimeout(() => setStage("open"), 1250);
+    const t1 = setTimeout(() => setStage((s) => (s === "sign" ? "rise" : s)), SIGN_MS);
+    const t = setTimeout(() => setStage((s) => (s === "sign" || s === "rise" ? "open" : s)), RISE_MS);
     // compteur 0 → 100 % calé sur la montée des piliers (écrit dans le DOM, sans re-rendu)
     const t0 = performance.now();
     let raf = 0;
     const tick = (now: number) => {
-      const k = Math.min(1, (now - t0) / 1150);
+      const k = Math.min(1, (now - t0) / (RISE_MS - 100));
       const e = 1 - Math.pow(1 - k, 2.4);
       if (pct.current) pct.current.textContent = String(Math.round(e * 100)).padStart(3, "0");
       if (bar.current) bar.current.style.transform = `scaleX(${e})`;
       if (k < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    const skip = () => setStage((s) => (s === "rise" ? "open" : s));
+    const skip = () => setStage((s) => (s === "sign" || s === "rise" ? "open" : s));
     addEventListener("pointerdown", skip, { once: true });
     addEventListener("keydown", skip, { once: true });
-    return () => { clearTimeout(t); cancelAnimationFrame(raf); removeEventListener("pointerdown", skip); removeEventListener("keydown", skip); };
+    return () => { clearTimeout(t); clearTimeout(t1); cancelAnimationFrame(raf); removeEventListener("pointerdown", skip); removeEventListener("keydown", skip); };
   }, []);
 
   useEffect(() => {
@@ -89,21 +93,53 @@ export function Loader() {
       }
       aria-hidden
     >
-      <div className={open ? "opacity-0" : ""}>
-        <Mark animate size={MARK} />
-      </div>
-      <motion.p
-        className="label absolute left-1/2 top-[calc(50%+64px)] -translate-x-1/2 whitespace-nowrap text-brass"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: open ? 0 : 1 }}
-        transition={{ delay: open ? 0 : 0.5, duration: open ? 0.2 : 0.6 }}
-      >
-        <span className="block text-center text-ash">Le trône s'éveille</span>
-        <span className="mt-2 block text-center">Bienvenue dans la Conspiration</span>
-      </motion.p>
+      {/* 0. le signe du C */}
+      <AnimatePresence>
+        {stage === "sign" && (
+          <motion.div
+            key="sign"
+            className="absolute inset-0 grid place-items-center"
+            exit={{ scale: 1.18, opacity: 0, filter: "blur(6px)" }}
+            transition={{ duration: 0.5, ease: [0.7, 0, 0.84, 0] }}
+          >
+            {/* le C en filigrane, immense */}
+            <motion.span
+              className="pointer-events-none absolute select-none font-display text-[min(150vw,130vh)] italic leading-none text-transparent [-webkit-text-stroke:1px_rgba(201,162,75,.22)]"
+              initial={{ scale: 0.55, opacity: 0, rotate: -8 }}
+              animate={{ scale: 1, opacity: 1, rotate: 0 }}
+              transition={{ delay: 0.75, duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+            >
+              C
+            </motion.span>
+            <div className="relative flex flex-col items-center gap-6">
+              <SigneC delay={0.05} />
+              <p className="text-center font-display leading-[.95]">
+                <Split text="Bienvenue" delay={1.15} className="block text-[clamp(30px,5vw,56px)] text-ivory" />
+                <Split text="dans la Conspiration" delay={1.3} className="block text-[clamp(30px,5vw,56px)] italic text-brass" />
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* 1. le trône se dresse */}
+      {stage !== "sign" && (
+        <div className={open ? "opacity-0" : ""}>
+          <Mark animate size={MARK} />
+        </div>
+      )}
+      {stage === "rise" && (
+        <motion.p
+          className="label absolute left-1/2 top-[calc(50%+64px)] -translate-x-1/2 whitespace-nowrap text-ash"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          Le trône s'éveille
+        </motion.p>
+      )}
       <motion.div className="absolute inset-x-5 bottom-6 md:inset-x-10" animate={{ opacity: open ? 0 : 1 }} transition={{ duration: 0.2 }}>
         <div className="label flex items-end justify-between text-ash">
-          <span>Mojotrône · Abidjan</span>
+          <span>La Conspiration · Abidjan</span>
           <span className="font-display text-heading not-italic tabular-nums tracking-normal text-ivory"><span ref={pct}>000</span><span className="text-brass">%</span></span>
         </div>
         <span className="mt-3 block h-px w-full bg-ivory/10"><span ref={bar} className="block h-full origin-left scale-x-0 bg-brass" /></span>
@@ -112,11 +148,31 @@ export function Loader() {
       <button
         type="button"
         tabIndex={-1}
-        onClick={() => setStage((s) => (s === "rise" ? "open" : s))}
+        onClick={() => setStage((s) => (s === "sign" || s === "rise" ? "open" : s))}
         className={`label absolute right-5 top-5 cursor-pointer border hairline px-4 py-2 text-ivory/70 transition-colors hover:border-brass hover:text-ivory md:right-10 ${open ? "opacity-0" : ""}`}
       >
         Passer
       </button>
     </div>
+  );
+}
+
+/** Titre découpé en lettres qui montent une à une. */
+function Split({ text, delay, className }: { text: string; delay: number; className?: string }) {
+  return (
+    <span className={className} aria-label={text}>
+      {text.split("").map((c, i) => (
+        <span key={i} className="inline-block overflow-hidden pb-[.12em] align-bottom" aria-hidden>
+          <motion.span
+            className="inline-block"
+            initial={{ y: "115%" }}
+            animate={{ y: 0 }}
+            transition={{ delay: delay + i * 0.022, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {c === " " ? " " : c}
+          </motion.span>
+        </span>
+      ))}
+    </span>
   );
 }
