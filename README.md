@@ -26,7 +26,9 @@ npm run build   # production dans dist/
 - `SHOW_CONCEPT_NOTICE` dans `src/data.ts` : passer à `false` une fois le site validé par l'équipe.
 
 ## Sources des informations
-- Wikipédia, « Didi B » : nom, naissance, Kiff No Beat, albums, labels, concerts.
+- Wikipédia, « Didi B » : nom, naissance, Kiff No Beat, concerts.
+- Albums (titres, dates, labels) : métadonnées fournies par les labels aux plateformes (API Apple Music et Deezer). Elles font foi sur Wikipédia.
+- Réseaux et identifiants officiels : Wikidata Q115791127.
 - Fraternité Matin et Abidjan.net : concert du 3 mai 2025 au Stade Félix Houphouët-Boigny.
 
 ## Photos et crédits

@@ -7,7 +7,7 @@ const facts = [
   ["Né le", "3 avril 1992, Abidjan"],
   ["Origine", "Kiff No Beat, fondé en 2009"],
   ["Surnom", "Babi Style"],
-  ["Maisons", "Universal · 92i Africa · Africa Mindset"],
+  ["Maisons", "Africa Mindset · Universal · 92i Africa · Repat Agency"],
 ];
 
 export function Story() {
@@ -40,7 +40,7 @@ export function Story() {
               Né à Abidjan en 1992, Diyilem fonde Kiff No Beat en 2009 avec ses cousins. Le groupe devient l'une des voix majeures du rap ivoirien.
             </p>
             <p>
-              En solo, il écrit son propre récit, ère après ère : de Mojo Trône à History, jusqu'aux stades d'Abidjan et de Bouaké, puis une nouvelle ère en 2026.
+              En solo, il écrit son propre récit, ère après ère : de Mojo Trône à History, jusqu'aux stades d'Abidjan et de Bouaké, puis Juventus Nueva Era en 2025 et Shogun in Lagos en 2026.
             </p>
           </div>
           <dl className="mt-16 border-t border-obsidian/15">

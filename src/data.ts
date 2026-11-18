@@ -27,7 +27,15 @@ export const stream = (title: string) => [
 
 // Clips : uniquement ceux publiés par les chaînes officielles (@DidiBVEVO, @DidiBKiffnobeatTV).
 // Dernier album, vérifié sur Spotify (23 titres) le 18.11.2026.
-export const latest = { title: "Shogun in Lagos", year: "2026", tracks: 23, spotifyAlbum: "0Uq4u4UvnkLtofhMy4TOwe" } as const;
+// Source : métadonnées fournies par le label aux plateformes (API Apple Music et Deezer, UPC 196874885215).
+export const latest = {
+  title: "Shogun in Lagos",
+  year: "2026",
+  date: "06.11.2026",
+  tracks: 23,
+  label: "Repat Agency · distribution Sony Music France",
+  spotifyAlbum: "0Uq4u4UvnkLtofhMy4TOwe",
+} as const;
 
 export type Clip = { id: string; title: string; feat?: string; album?: string };
 export const clips: Clip[] = [
@@ -46,13 +54,13 @@ export type Era = {
   hue: string; // couleur de l'ère, utilisée pour le disque
 };
 
-// Discographie (source : Wikipédia, page « Didi B »)
+// Discographie. Dates : métadonnées des labels (API Apple Music et Deezer), vérifiées le 18.11.2026.
 export const eras: Era[] = [
   { n: 1, year: "2013", title: "Mojo Trône", kicker: "Vol. 1", line: "Le premier trône. Kiff No Beat pose les fondations.", hue: "#7a5a2a" },
   { n: 2, year: "2022", title: "History", kicker: "Mojotrône II", line: "Le chapitre qui écrit l'histoire en lettres capitales.", hue: "#a8873f" },
-  { n: 3, year: "2023", title: "Before Olympia", kicker: "Avant la scène", line: "Le souffle avant Paris.", hue: "#6b3a2a" },
+  { n: 3, year: "2024", title: "Before Olympia", kicker: "EP", line: "Le souffle avant l'Olympia.", hue: "#6b3a2a" },
   { n: 4, year: "2025", title: "Genius", kicker: "Diyilem & Bazarhoff", line: "Deux faces, un seul génie.", hue: "#5a4128" },
-  { n: 5, year: "2026", title: "Juventus Nueva Era", kicker: "Nouvelle ère", line: "Le règne continue. Une nouvelle génération.", hue: "#b3261e" },
+  { n: 5, year: "2025", title: "Juventus Nueva Era", kicker: "Nouvelle ère", line: "Le règne continue. Une nouvelle génération.", hue: "#b3261e" },
 ];
 
 // Chronique scénique (source : Wikipédia ; Fraternité Matin ; Abidjan.net)

@@ -52,7 +52,7 @@ export function Hero() {
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: d + 0.1 }} className="mt-1 text-brass">Babi · Côte d'Ivoire</motion.p>
       </div>
       <motion.p className="absolute right-5 top-24 md:right-10 label text-right text-ivory/70" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: d + 0.2 }}>
-        Ère <span className="text-blood">V</span><br />Juventus Nueva Era
+        Nouvel album · 06.11.2026<br /><span className="text-ivory">Shogun in Lagos</span>
       </motion.p>
 
       <motion.div style={{ y, opacity: fade }} className="relative z-10 flex h-full flex-col justify-end px-5 pb-10 md:px-10 md:pb-14">

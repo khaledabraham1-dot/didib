@@ -74,7 +74,7 @@ function SpotifyPlayer() {
         />
       ) : (
         <button type="button" onClick={() => setOn(true)} className="group grain flex size-full cursor-pointer flex-col justify-between p-6 text-left md:p-8">
-          <span className="flex items-start justify-between gap-4"><span className="label text-brass">Nouvel album · {latest.tracks} titres</span><span className="label text-ash">{latest.year}</span></span>
+          <span className="flex items-start justify-between gap-4"><span className="label text-brass">Nouvel album · {latest.tracks} titres</span><span className="label text-ash">{latest.date}</span></span>
           <span>
             <span className="flex items-center gap-4">
               <span className="grid size-14 place-items-center bg-brass text-obsidian transition-transform duration-500 ease-[var(--ease-throne)] group-hover:scale-110">
@@ -82,6 +82,7 @@ function SpotifyPlayer() {
               </span>
               <span><span className="label block text-ash">Écouter sur Spotify</span><span className="mt-1 block font-display text-heading italic">{latest.title}</span></span>
             </span>
+            <span className="label mt-5 block text-ash">℗ {latest.label}</span>
             <span className="mt-4 block text-sm text-ivory/55">{NOTICE}</span>
           </span>
         </button>
