@@ -13,6 +13,7 @@ import { Palmares } from "./components/Palmares";
 import { Story } from "./components/Story";
 import { Shop } from "./components/Shop";
 import { Cour } from "./components/Cour";
+import { Reseaux } from "./components/Reseaux";
 import { Footer } from "./components/Footer";
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
         <Story />
         <Shop />
         <Cour />
+        <Reseaux />
       </main>
       <Footer />
       <Toaster position="bottom-center" toastOptions={{ style: { background: "#0b0a08", color: "#efe8da", border: "1px solid rgba(201,162,75,.4)", borderRadius: 0, fontFamily: "Archivo Variable" } }} />

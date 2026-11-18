@@ -12,17 +12,6 @@ import { webglAvailable } from "@/three/support";
 type Register = (n: number, el: HTMLElement | null, spin?: MotionValue<number>) => void;
 const Vinyl3D = createContext<Register | null>(null);
 
-function useDesktop() {
-  const [d, setD] = useState(() => typeof window !== "undefined" && matchMedia("(min-width: 1024px)").matches);
-  useEffect(() => {
-    const m = matchMedia("(min-width: 1024px)");
-    const f = () => setD(m.matches);
-    m.addEventListener("change", f);
-    return () => m.removeEventListener("change", f);
-  }, []);
-  return d;
-}
-
 function Tonearm({ on }: { on: boolean }) {
   // bras de lecture : repos hors du disque, se pose sur les sillons pendant la lecture
   return (
@@ -53,7 +42,7 @@ function Disc({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
   const register = useContext(Vinyl3D);
   if (register) {
     return (
-      <div className="relative w-[min(68vw,340px)] shrink-0 lg:w-[min(32vw,440px)]">
+      <div className="relative w-[min(58vw,30svh)] shrink-0 lg:w-[min(32vw,440px)]">
         <button
           ref={(el) => register(era.n, el, spin)}
           type="button"
@@ -71,7 +60,7 @@ function Disc({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
   }
 
   return (
-    <div className="relative w-[min(68vw,340px)] shrink-0 lg:w-[min(32vw,440px)]">
+    <div className="relative w-[min(58vw,30svh)] shrink-0 lg:w-[min(32vw,440px)]">
       {/* halo qui bat au rythme réel du morceau (--beat, 0 à 1) */}
       <div
         className={cn("pointer-events-none absolute -inset-[14%] rounded-full transition-opacity duration-700", playing ? "opacity-100" : "opacity-0")}
@@ -129,7 +118,7 @@ function Card({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
   const onClick = () =>
     toggle(id, era.track.id).catch(() => toast.error("Extrait indisponible pour le moment. Écoutez l'album sur les plateformes."));
   return (
-    <article className="relative flex w-[86vw] shrink-0 snap-center flex-col gap-10 lg:h-full lg:w-[78vw] lg:flex-row lg:items-center lg:gap-20 lg:px-10">
+    <article className="relative flex h-full w-full flex-col justify-center gap-6 px-5 lg:w-[78vw] lg:flex-row lg:items-center lg:gap-20 lg:px-10">
       <span className="pointer-events-none absolute -top-6 right-0 select-none font-display text-[38vw] italic leading-none text-transparent [-webkit-text-stroke:1px_rgba(201,162,75,.18)] lg:-top-10 lg:text-[24vw]" aria-hidden>
         {roman(era.n)}
       </span>
@@ -138,12 +127,12 @@ function Card({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
         <p className="label text-brass">
           Ère {roman(era.n)} · {era.year}
         </p>
-        <h3 className="mt-3 font-display text-title italic tracking-[-.03em]">{era.title}</h3>
+        <h3 className="mt-2 font-display text-[clamp(34px,9vw,48px)] italic leading-[.95] tracking-[-.03em] lg:mt-3 lg:text-title">{era.title}</h3>
         <p className="mt-2 font-sans font-wide text-sm uppercase tracking-[.2em] text-ash">{era.kicker}</p>
-        <p className="mt-6 max-w-sm text-lg leading-snug text-ivory/80">{era.line}</p>
+        <p className="mt-3 max-w-sm leading-snug text-ivory/80 lg:mt-6 lg:text-lg">{era.line}</p>
 
         {/* extrait officiel */}
-        <button type="button" onClick={onClick} className="group mt-8 flex w-full max-w-sm cursor-pointer items-center gap-4 border hairline px-4 py-3 text-left transition-colors hover:border-brass" aria-pressed={playing}>
+        <button type="button" onClick={onClick} className="group mt-4 flex w-full max-w-sm cursor-pointer items-center gap-4 border hairline px-4 py-3 text-left transition-colors hover:border-brass" aria-pressed={playing}>
           <span className="grid size-10 shrink-0 place-items-center bg-brass text-obsidian">
             {playing ? <Pause className="size-4 fill-current" aria-hidden /> : <Play className="size-4 fill-current" aria-hidden />}
           </span>
@@ -156,7 +145,7 @@ function Card({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
           </span>
         </button>
 
-        <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+        <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2 lg:mt-6">
           {stream(era.title).map((s) => (
             <li key={s.name}>
               <a href={s.href} target="_blank" rel="noreferrer" className="label inline-flex items-center gap-1 text-ivory/70 transition-colors hover:text-brass">
@@ -173,7 +162,6 @@ function Card({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
 }
 
 export function Eras() {
-  const desktop = useDesktop();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const x = useTransform(scrollYProgress, [0, 1], ["0%", `-${((eras.length - 1) / eras.length) * 100}%`]);
@@ -226,16 +214,16 @@ export function Eras() {
 
   return (
     <Vinyl3D.Provider value={gl ? register : null}>
-    <section id="eres" ref={ref} className="relative bg-ink lg:h-[300vh]">
-      <div className="relative lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:overflow-hidden">
+    <section id="eres" ref={ref} className="relative h-[340vh] bg-ink lg:h-[300vh]">
+      <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden">
         {gl && <canvas ref={canvas} className="pointer-events-none absolute inset-0 z-0 size-full" aria-hidden />}
-        <header className="relative z-[1] flex items-end justify-between px-5 pb-8 pt-24 lg:px-10 lg:pt-24">
+        <header className="relative z-[1] flex items-end justify-between px-5 pb-2 pt-20 lg:px-10 lg:pb-8 lg:pt-24">
           <div>
             <p className="label text-brass">I · Discographie</p>
-            <h2 className="mt-3 font-display text-subtitle">Les cinq ères</h2>
+            <h2 className="mt-2 font-display text-[clamp(32px,8vw,40px)] leading-none lg:mt-3 lg:text-subtitle">Les cinq ères</h2>
           </div>
           {/* les piliers du trône : indicateur et navigation */}
-          <nav className="hidden items-end gap-1 lg:flex" aria-label="Choisir une ère">
+          <nav className="flex items-end gap-0.5 lg:gap-1" aria-label="Choisir une ère">
             {eras.map((e, i) => (
               <button
                 key={e.n}
@@ -245,25 +233,19 @@ export function Eras() {
                 aria-current={i === active ? "step" : undefined}
                 className="group flex cursor-pointer flex-col items-center gap-2 px-1.5 pt-2"
               >
-                <span className={cn("block w-2 origin-bottom transition-all duration-700 ease-[var(--ease-throne)]", i === 4 ? "bg-blood" : "bg-brass", i === active ? "h-14" : "h-6 opacity-40 group-hover:h-9 group-hover:opacity-80")} />
+                <span className={cn("block w-2 origin-bottom transition-all duration-700 ease-[var(--ease-throne)]", i === 4 ? "bg-blood" : "bg-brass", i === active ? "h-9 lg:h-14" : "h-4 opacity-40 group-hover:h-6 group-hover:opacity-80 lg:h-6 lg:group-hover:h-9")} />
                 <span className={cn("font-display text-xs transition-colors", i === active ? "text-ivory" : "text-ash group-hover:text-ivory")}>{roman(e.n)}</span>
               </button>
             ))}
           </nav>
         </header>
-        {desktop ? (
-          <motion.div style={{ x, width: `${eras.length * 100}%` }} className="relative z-[1] flex flex-1 items-center">
-            {eras.map((e) => (
-              <div key={e.n} className="flex h-full w-full items-center justify-center">
-                <Card era={e} spin={spin} />
-              </div>
-            ))}
-          </motion.div>
-        ) : (
-          <div className="relative z-[1] flex snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-20 [scrollbar-width:none]">
-            {eras.map((e) => <Card key={e.n} era={e} />)}
-          </div>
-        )}
+        <motion.div style={{ x, width: `${eras.length * 100}%` }} className="relative z-[1] flex min-h-0 flex-1 items-center">
+          {eras.map((e) => (
+            <div key={e.n} className="flex h-full w-full items-center justify-center">
+              <Card era={e} spin={spin} />
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
     </Vinyl3D.Provider>

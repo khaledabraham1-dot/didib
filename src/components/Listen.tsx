@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { brands, BrandIcon } from "@/brands";
 import { Incontournables } from "./Incontournables";
 import { Discographie } from "./Discographie";
 import { motion } from "motion/react";
-import { ArrowUpRight, Play } from "lucide-react";
-import { clips, latest, platforms, type Clip } from "@/data";
+import { Play } from "lucide-react";
+import { clips, latest, type Clip } from "@/data";
 import { cn } from "@/lib/utils";
 
 /*
@@ -106,11 +107,11 @@ export function Listen() {
               Le nouvel album {latest.title}, les incontournables, toute la discographie et les clips officiels. Un clic, et la Conspiration s'allume.
             </p>
             <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-3">
-              {platforms.map((p) => (
-                <li key={p.name}>
-                  <a href={p.href} target="_blank" rel="noreferrer" className="label inline-flex items-center gap-1.5 border-b border-transparent pb-1 text-ivory/80 transition-colors hover:border-brass hover:text-brass">
-                    {p.name}
-                    <ArrowUpRight className="size-3.5" aria-hidden />
+              {brands.filter((b) => b.kind === "music" || b.id === "youtube").map((b) => (
+                <li key={b.id}>
+                  <a href={b.href} target="_blank" rel="noreferrer" className="label inline-flex items-center gap-2 border-b border-transparent pb-1 text-ivory/80 transition-colors hover:border-brass hover:text-brass">
+                    <BrandIcon brand={b} className="size-4" />
+                    {b.name}
                     <span className="sr-only"> (nouvel onglet)</span>
                   </a>
                 </li>

@@ -1,4 +1,5 @@
-import { photoLicense, photos, socials, SHOW_CONCEPT_NOTICE } from "@/data";
+import { photoLicense, photos, SHOW_CONCEPT_NOTICE } from "@/data";
+import { brands, BrandIcon } from "@/brands";
 import { Mark } from "./Mark";
 
 export function Footer() {
@@ -7,9 +8,13 @@ export function Footer() {
       <div className="mx-auto max-w-[1440px]">
         <div className="flex flex-wrap items-start justify-between gap-10">
           <Mark size={56} />
-          <ul className="flex flex-wrap gap-x-8 gap-y-3">
-            {socials.map((s) => (
-              <li key={s.name}><a href={s.href} target="_blank" rel="noreferrer" className="label text-ivory/70 transition-colors hover:text-brass">{s.name}<span className="sr-only"> (nouvel onglet)</span></a></li>
+          <ul className="flex flex-wrap gap-2">
+            {brands.filter((b) => b.kind === "social").map((b) => (
+              <li key={b.id}>
+                <a href={b.href} target="_blank" rel="noreferrer" aria-label={`${b.name} (nouvel onglet)`} className="grid size-11 place-items-center border hairline text-ivory/70 transition-colors hover:border-brass hover:text-brass">
+                  <BrandIcon brand={b} className="size-5" />
+                </a>
+              </li>
             ))}
           </ul>
         </div>
