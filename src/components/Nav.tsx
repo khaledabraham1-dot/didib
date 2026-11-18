@@ -22,11 +22,12 @@ function useActive(ids: string[]) {
 
 export const links = [
   { id: "eres", label: "Les ères" },
-  { id: "ecouter", label: "Écouter" },
+  { id: "ecouter", label: "Les sons" },
   { id: "sacre", label: "Le sacre" },
+  { id: "palmares", label: "Palmarès" },
   { id: "diyilem", label: "Diyilem" },
   { id: "boutique", label: "Boutique" },
-  { id: "cour", label: "La cour" },
+  { id: "cour", label: "Conspiration" },
 ];
 const ids = links.map((l) => l.id);
 

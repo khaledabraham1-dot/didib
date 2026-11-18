@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Incontournables } from "./Incontournables";
+import { Discographie } from "./Discographie";
 import { motion } from "motion/react";
 import { ArrowUpRight, Play } from "lucide-react";
 import { clips, latest, platforms, type Clip } from "@/data";
@@ -98,10 +100,10 @@ export function Listen() {
       <div className="mx-auto max-w-[1440px]">
         <div className="grid gap-12 md:grid-cols-[1fr_minmax(0,460px)] md:items-end md:gap-20">
           <div>
-            <p className="label text-brass">II · Écouter</p>
+            <p className="label text-brass">II · Les sons</p>
             <h2 className="mt-3 font-display text-subtitle">Le son du trône</h2>
             <p className="mt-6 max-w-md text-lg leading-snug text-ivory/75">
-              Le nouvel album, {latest.title}, et les clips officiels. Un clic, et la cour s'allume.
+              Le nouvel album {latest.title}, les incontournables, toute la discographie et les clips officiels. Un clic, et la Conspiration s'allume.
             </p>
             <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-3">
               {platforms.map((p) => (
@@ -117,6 +119,9 @@ export function Listen() {
           </div>
           <SpotifyPlayer />
         </div>
+
+        <div className="mt-24 md:mt-32"><Incontournables /></div>
+        <div className="mt-24 md:mt-32"><Discographie /></div>
 
         <div className="mt-24 flex items-end justify-between gap-6 border-b hairline pb-6 md:mt-32">
           <h3 className="font-display text-heading">Clips</h3>

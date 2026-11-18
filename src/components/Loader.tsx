@@ -98,7 +98,8 @@ export function Loader() {
         animate={{ opacity: open ? 0 : 1 }}
         transition={{ delay: open ? 0 : 0.5, duration: open ? 0.2 : 0.6 }}
       >
-        Le trône s'éveille
+        <span className="block text-center text-ash">Le trône s'éveille</span>
+        <span className="mt-2 block text-center">Bienvenue dans la Conspiration</span>
       </motion.p>
       <motion.div className="absolute inset-x-5 bottom-6 md:inset-x-10" animate={{ opacity: open ? 0 : 1 }} transition={{ duration: 0.2 }}>
         <div className="label flex items-end justify-between text-ash">

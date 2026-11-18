@@ -9,6 +9,7 @@ import { Chiffres } from "./components/Chiffres";
 import { Eras } from "./components/Eras";
 import { Listen } from "./components/Listen";
 import { Sacre } from "./components/Sacre";
+import { Palmares } from "./components/Palmares";
 import { Story } from "./components/Story";
 import { Shop } from "./components/Shop";
 import { Cour } from "./components/Cour";
@@ -28,6 +29,7 @@ export default function App() {
         <Eras />
         <Listen />
         <Sacre />
+        <Palmares />
         <Story />
         <Shop />
         <Cour />
