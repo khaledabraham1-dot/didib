@@ -69,7 +69,7 @@ export function Hero() {
           </motion.p>
           <motion.div className="flex flex-wrap gap-3" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: d + 0.15, duration: 0.8 }}>
             <Button asChild variant="crown" size="lg">
-              <a href="#ecouter"><span className="relative z-10 inline-flex items-center gap-3"><Play className="fill-current" />Écouter Didi B</span></a>
+              <a href="#ecouter"><span className="relative z-10 inline-flex items-center gap-3"><Play className="fill-current" />Écouter Shogun in Lagos</span></a>
             </Button>
             <Button asChild variant="outline" size="lg" className="bg-obsidian/40 backdrop-blur-sm">
               <a href="#eres"><span className="relative z-10 inline-flex items-center gap-3">Les cinq ères<ArrowDownRight /></span></a>

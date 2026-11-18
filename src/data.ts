@@ -26,11 +26,14 @@ export const stream = (title: string) => [
 ];
 
 // Clips : uniquement ceux publiés par les chaînes officielles (@DidiBVEVO, @DidiBKiffnobeatTV).
-export type Clip = { id: string; title: string; feat?: string };
+// Dernier album, vérifié sur Spotify (23 titres) le 18.11.2026.
+export const latest = { title: "Shogun in Lagos", year: "2026", tracks: 23, spotifyAlbum: "0Uq4u4UvnkLtofhMy4TOwe" } as const;
+
+export type Clip = { id: string; title: string; feat?: string; album?: string };
 export const clips: Clip[] = [
-  { id: "v2p1IwUcYp0", title: "Malade", feat: "Khaid" },
-  { id: "oJpfbw2uQAc", title: "Juru", feat: "Tayc" },
-  { id: "Ses4nRv7IQI", title: "Igbo" },
+  { id: "v2p1IwUcYp0", title: "Malade", feat: "Khaid", album: "Shogun in Lagos" },
+  { id: "oJpfbw2uQAc", title: "Juru", feat: "Tayc", album: "Shogun in Lagos" },
+  { id: "Ses4nRv7IQI", title: "Igbo", album: "Shogun in Lagos" },
   { id: "HsRileLIU1g", title: "IPRC" },
 ];
 
@@ -61,7 +64,7 @@ export const stages = [
   { date: "2025", place: "Stade de Bouaké", city: "Bouaké", note: "Le sacre continue au centre du pays." },
 ];
 
-export const tickerWords = ["Babi Style", "Mojo Trône", "Diyilem", "Bazarhoff", "Kiff No Beat", "Abidjan", "Nueva Era"];
+export const tickerWords = ["Babi Style", "Mojo Trône", "Diyilem", "Bazarhoff", "Kiff No Beat", "Abidjan", "Nueva Era", "Shogun in Lagos"];
 
 export const merch = [
   { name: "Maillot Nueva Era", tag: "Édition 05" },

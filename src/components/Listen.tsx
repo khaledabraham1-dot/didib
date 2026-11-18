@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { ArrowUpRight, Play } from "lucide-react";
-import { clips, official, platforms, type Clip } from "@/data";
+import { clips, latest, platforms, type Clip } from "@/data";
 import { cn } from "@/lib/utils";
 
 /*
@@ -49,7 +49,7 @@ function ClipPlayer({ clip, featured = false, index }: { clip: Clip; featured?: 
               <Play className={cn("fill-current", featured ? "size-6 md:size-7" : "size-5")} aria-hidden />
             </span>
             <span className={cn("absolute inset-x-4 bottom-4 md:inset-x-6 md:bottom-5", featured && "md:inset-x-8 md:bottom-8")}>
-              <span className="label block text-brass">Clip officiel</span>
+              <span className="label block text-brass">Clip officiel{clip.album ? ` · ${clip.album}` : ""}</span>
               <span className={cn("mt-1 block font-display italic leading-none text-ivory", featured ? "text-title" : "text-heading")}>{clip.title}</span>
               {clip.feat && <span className="label mt-2 block text-ivory/70">ft. {clip.feat}</span>}
             </span>
@@ -67,20 +67,20 @@ function SpotifyPlayer() {
       {on ? (
         <iframe
           className="size-full"
-          src={`https://open.spotify.com/embed/artist/${official.spotifyArtist}?theme=0`}
-          title="Didi B sur Spotify"
+          src={`https://open.spotify.com/embed/album/${latest.spotifyAlbum}?theme=0`}
+          title={`Didi B — ${latest.title} sur Spotify`}
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
           loading="lazy"
         />
       ) : (
         <button type="button" onClick={() => setOn(true)} className="group grain flex size-full cursor-pointer flex-col justify-between p-6 text-left md:p-8">
-          <span className="label text-brass">Spotify · titres populaires</span>
+          <span className="flex items-start justify-between gap-4"><span className="label text-brass">Nouvel album · {latest.tracks} titres</span><span className="label text-ash">{latest.year}</span></span>
           <span>
             <span className="flex items-center gap-4">
               <span className="grid size-14 place-items-center bg-brass text-obsidian transition-transform duration-500 ease-[var(--ease-throne)] group-hover:scale-110">
                 <Play className="size-5 fill-current" aria-hidden />
               </span>
-              <span className="font-display text-heading italic">Lancer l'écoute</span>
+              <span><span className="label block text-ash">Écouter sur Spotify</span><span className="mt-1 block font-display text-heading italic">{latest.title}</span></span>
             </span>
             <span className="mt-4 block text-sm text-ivory/55">{NOTICE}</span>
           </span>
@@ -100,7 +100,7 @@ export function Listen() {
             <p className="label text-brass">II — Écouter</p>
             <h2 className="mt-3 font-display text-subtitle">Le son du trône</h2>
             <p className="mt-6 max-w-md text-lg leading-snug text-ivory/75">
-              Les titres les plus écoutés, et les clips officiels. Un clic, et la cour s'allume.
+              Le nouvel album, {latest.title}, et les clips officiels. Un clic, et la cour s'allume.
             </p>
             <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-3">
               {platforms.map((p) => (
