@@ -11,7 +11,7 @@ const ease = [0.7, 0, 0.2, 1] as const;
 const Letter = ({ c, i }: { c: string; i: number }) => (
   <span className="inline-block overflow-hidden pb-[.08em] align-bottom" aria-hidden>
     <motion.span className="inline-block" initial={{ y: "110%" }} animate={{ y: 0 }} transition={{ delay: INTRO + i * 0.05, duration: 0.9, ease }}>
-      {c === " " ? " " : c}
+      {c === " " ? " " : c}
     </motion.span>
   </span>
 );
@@ -48,7 +48,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_40%,transparent_40%,rgba(11,10,8,.7)_100%)]" />
       <div className="absolute inset-0 opacity-70 mix-blend-screen"><Beams /></div>
 
-      <div className="absolute left-5 top-24 md:left-10 label text-ivory/70">
+      <div className="absolute left-5 top-24 hidden label text-ivory/70 sm:block md:left-10">
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: d }}>5°19′N · 4°01′W</motion.p>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: d + 0.1 }} className="mt-1 text-brass">Babi · Côte d'Ivoire</motion.p>
       </div>

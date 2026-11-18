@@ -13,9 +13,9 @@ type Register = (n: number, el: HTMLElement | null, spin?: MotionValue<number>) 
 const Vinyl3D = createContext<Register | null>(null);
 
 function useDesktop() {
-  const [d, setD] = useState(() => typeof window !== "undefined" && matchMedia("(min-width: 768px)").matches);
+  const [d, setD] = useState(() => typeof window !== "undefined" && matchMedia("(min-width: 1024px)").matches);
   useEffect(() => {
-    const m = matchMedia("(min-width: 768px)");
+    const m = matchMedia("(min-width: 1024px)");
     const f = () => setD(m.matches);
     m.addEventListener("change", f);
     return () => m.removeEventListener("change", f);
@@ -53,7 +53,7 @@ function Disc({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
   const register = useContext(Vinyl3D);
   if (register) {
     return (
-      <div className="relative w-[min(68vw,340px)] shrink-0 md:w-[min(32vw,440px)]">
+      <div className="relative w-[min(68vw,340px)] shrink-0 lg:w-[min(32vw,440px)]">
         <button
           ref={(el) => register(era.n, el, spin)}
           type="button"
@@ -71,7 +71,7 @@ function Disc({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
   }
 
   return (
-    <div className="relative w-[min(68vw,340px)] shrink-0 md:w-[min(32vw,440px)]">
+    <div className="relative w-[min(68vw,340px)] shrink-0 lg:w-[min(32vw,440px)]">
       {/* halo qui bat au rythme réel du morceau (--beat, 0 à 1) */}
       <div
         className={cn("pointer-events-none absolute -inset-[14%] rounded-full transition-opacity duration-700", playing ? "opacity-100" : "opacity-0")}
@@ -129,8 +129,8 @@ function Card({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
   const onClick = () =>
     toggle(id, era.track.id).catch(() => toast.error("Extrait indisponible pour le moment. Écoutez l'album sur les plateformes."));
   return (
-    <article className="relative flex w-[86vw] shrink-0 snap-center flex-col gap-10 md:h-full md:w-[78vw] md:flex-row md:items-center md:gap-20 md:px-10">
-      <span className="pointer-events-none absolute -top-6 right-0 select-none font-display text-[38vw] italic leading-none text-transparent [-webkit-text-stroke:1px_rgba(201,162,75,.18)] md:-top-10 md:text-[24vw]" aria-hidden>
+    <article className="relative flex w-[86vw] shrink-0 snap-center flex-col gap-10 lg:h-full lg:w-[78vw] lg:flex-row lg:items-center lg:gap-20 lg:px-10">
+      <span className="pointer-events-none absolute -top-6 right-0 select-none font-display text-[38vw] italic leading-none text-transparent [-webkit-text-stroke:1px_rgba(201,162,75,.18)] lg:-top-10 lg:text-[24vw]" aria-hidden>
         {roman(era.n)}
       </span>
       <Disc era={era} spin={spin} />
@@ -226,16 +226,16 @@ export function Eras() {
 
   return (
     <Vinyl3D.Provider value={gl ? register : null}>
-    <section id="eres" ref={ref} className="relative bg-ink md:h-[300vh]">
-      <div className="relative md:sticky md:top-0 md:flex md:h-screen md:flex-col md:overflow-hidden">
+    <section id="eres" ref={ref} className="relative bg-ink lg:h-[300vh]">
+      <div className="relative lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:overflow-hidden">
         {gl && <canvas ref={canvas} className="pointer-events-none absolute inset-0 z-0 size-full" aria-hidden />}
-        <header className="relative z-[1] flex items-end justify-between px-5 pb-8 pt-24 md:px-10 md:pt-24">
+        <header className="relative z-[1] flex items-end justify-between px-5 pb-8 pt-24 lg:px-10 lg:pt-24">
           <div>
             <p className="label text-brass">I · Discographie</p>
             <h2 className="mt-3 font-display text-subtitle">Les cinq ères</h2>
           </div>
           {/* les piliers du trône : indicateur et navigation */}
-          <nav className="hidden items-end gap-1 md:flex" aria-label="Choisir une ère">
+          <nav className="hidden items-end gap-1 lg:flex" aria-label="Choisir une ère">
             {eras.map((e, i) => (
               <button
                 key={e.n}

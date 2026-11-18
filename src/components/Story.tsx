@@ -35,7 +35,7 @@ export function Story() {
           >
             Avant le trône, il y avait <em className="text-brass-soft">un quartier</em>, des cousins et un micro.
           </motion.h2>
-          <div className="mt-12 grid gap-8 text-lg leading-relaxed text-obsidian/85 md:grid-cols-2">
+          <div className="mt-12 grid gap-8 text-lg leading-relaxed text-obsidian/85 lg:grid-cols-2">
             <p>
               Né à Abidjan en 1992, Diyilem fonde Kiff No Beat en 2009 avec ses cousins. Le groupe devient l'une des voix majeures du rap ivoirien.
             </p>

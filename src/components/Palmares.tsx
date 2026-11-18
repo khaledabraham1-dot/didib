@@ -94,7 +94,7 @@ export function Palmares() {
         </ul>
 
         {/* trophées */}
-        <ul className="mt-16 grid gap-4 md:mt-24 md:grid-cols-3 md:gap-6">
+        <ul className="mt-16 grid gap-4 md:mt-24 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
           {awards.map((a, i) => <Plaque key={a.ceremony + a.year + a.title} a={a} i={i} />)}
         </ul>
 

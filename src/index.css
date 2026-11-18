@@ -40,6 +40,12 @@
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
 }
 
+/* Survol : souris réelle, ou élément au centre de l'écran sur tactile (data-inview, voir lib/touch.ts) */
+@custom-variant hover {
+  @media (hover: hover) { &:hover { @slot; } }
+  &[data-inview] { @slot; }
+}
+
 @utility font-wide { font-stretch: 125%; }
 @utility font-narrow { font-stretch: 62%; }
 @utility label {
