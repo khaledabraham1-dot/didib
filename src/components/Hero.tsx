@@ -39,7 +39,7 @@ export function Hero() {
             src={photoUrl("hero-mobile.webp")}
             alt={photos.hero.alt}
             fetchPriority="high"
-            className="size-full object-cover object-[40%_20%] md:object-[50%_22%]"
+            className="size-full object-cover object-[6%_20%] md:object-[50%_22%]"
           />
         </motion.picture>
       </motion.div>

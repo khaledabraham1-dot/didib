@@ -30,7 +30,7 @@ function ClipPlayer({ clip, featured = false, index }: { clip: Clip; featured?: 
       <div className="group relative aspect-video overflow-hidden bg-coal">
         {on ? (
           <iframe
-            className="absolute inset-0 size-full"
+            className="absolute inset-0 size-full bg-transparent [color-scheme:normal]"
             src={`https://www.youtube-nocookie.com/embed/${clip.id}?autoplay=1&rel=0&modestbranding=1`}
             title={`Didi B, ${label} (clip officiel)`}
             allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
@@ -66,10 +66,10 @@ function ClipPlayer({ clip, featured = false, index }: { clip: Clip; featured?: 
 function SpotifyPlayer() {
   const [on, setOn] = useState(false);
   return (
-    <div className="relative h-[352px] overflow-hidden border hairline bg-coal">
+    <div className="relative h-[354px] overflow-hidden border hairline bg-coal">
       {on ? (
         <iframe
-          className="size-full"
+          className="block h-[352px] w-full bg-transparent [clip-path:inset(0_round_12px)] [color-scheme:normal]"
           src={`https://open.spotify.com/embed/album/${latest.spotifyAlbum}?theme=0`}
           title={`Didi B, ${latest.title} sur Spotify`}
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
