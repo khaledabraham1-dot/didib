@@ -16,7 +16,7 @@ export function Shop() {
       <div className="mx-auto max-w-[1440px]">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="label text-brass">V — Boutique</p>
+            <p className="label text-brass">V · Boutique</p>
             <h2 className="mt-3 font-display text-subtitle">Porter la couronne</h2>
           </div>
           <div className="flex flex-col items-start gap-4 md:items-end">

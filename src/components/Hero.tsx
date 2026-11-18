@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { ArrowDownRight, Play } from "lucide-react";
 import { Beams } from "./Beams";
 import { Button } from "./ui/button";
+import { Magnetic } from "./Magnetic";
 import { INTRO } from "./Loader";
 import { photos, photoUrl } from "@/data";
 
@@ -57,7 +58,7 @@ export function Hero() {
 
       <motion.div style={{ y, opacity: fade }} className="relative z-10 flex h-full flex-col justify-end px-5 pb-10 md:px-10 md:pb-14">
         <motion.p className="label mb-4 text-brass" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: INTRO, duration: 0.8 }}>
-          Mojotrône — le règne continue
+          Mojotrône. Le règne continue
         </motion.p>
         <h1 className="font-display text-hero italic tracking-[-.04em] text-ivory">
           <span className="sr-only">Didi B</span>
@@ -65,15 +66,19 @@ export function Hero() {
         </h1>
         <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <motion.p className="max-w-md font-sans text-[15px] leading-relaxed text-ivory/85" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: d, duration: 1 }}>
-            Abidjan l'a couronné. Les stades l'ont confirmé. Cinq ères, un seul trône — et une nouvelle génération qui se lève.
+            Abidjan l'a couronné. Les stades l'ont confirmé. Cinq ères, un seul trône, et une nouvelle génération qui se lève.
           </motion.p>
           <motion.div className="flex flex-wrap gap-3" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: d + 0.15, duration: 0.8 }}>
-            <Button asChild variant="crown" size="lg">
-              <a href="#ecouter"><span className="relative z-10 inline-flex items-center gap-3"><Play className="fill-current" />Écouter Shogun in Lagos</span></a>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="bg-obsidian/40 backdrop-blur-sm">
-              <a href="#eres"><span className="relative z-10 inline-flex items-center gap-3">Les cinq ères<ArrowDownRight /></span></a>
-            </Button>
+            <Magnetic>
+              <Button asChild variant="crown" size="lg">
+                <a href="#ecouter"><span className="relative z-10 inline-flex items-center gap-3"><Play className="fill-current" />Écouter Shogun in Lagos</span></a>
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button asChild variant="outline" size="lg" className="bg-obsidian/40 backdrop-blur-sm">
+                <a href="#eres"><span className="relative z-10 inline-flex items-center gap-3">Les cinq ères<ArrowDownRight /></span></a>
+              </Button>
+            </Magnetic>
           </motion.div>
         </div>
       </motion.div>

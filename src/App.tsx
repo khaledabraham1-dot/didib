@@ -4,6 +4,8 @@ import { Loader } from "./components/Loader";
 import { Nav } from "./components/Nav";
 import { Hero } from "./components/Hero";
 import { Ticker } from "./components/Ticker";
+import { Trone } from "./components/Trone";
+import { Chiffres } from "./components/Chiffres";
 import { Eras } from "./components/Eras";
 import { Listen } from "./components/Listen";
 import { Sacre } from "./components/Sacre";
@@ -21,6 +23,8 @@ export default function App() {
       <main>
         <Hero />
         <Ticker />
+        <Chiffres />
+        <Trone />
         <Eras />
         <Listen />
         <Sacre />

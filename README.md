@@ -1,4 +1,4 @@
-# DIDI B — « Le Trône »
+# DIDI B · « Le Trône »
 
 Concept de site officiel pour Didi B, conçu par SK DIGITAL.
 

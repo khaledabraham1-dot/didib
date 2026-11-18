@@ -17,7 +17,7 @@ export function Footer() {
         <div className="mt-10 border-t hairline pt-6">
           <p className="label text-ash">Crédits photo</p>
           <p className="mt-3 max-w-3xl text-xs leading-relaxed text-ivory/55">
-            Photos Wikimedia Commons —{" "}
+            Photos Wikimedia Commons :{" "}
             {[...new Map(Object.values(photos).map((p) => [p.author, p.source])).entries()].map(([author, src], i, all) => (
               <span key={author}><a href={src} target="_blank" rel="noreferrer" className="underline decoration-ivory/25 underline-offset-2 hover:text-brass">{author}</a>{i < all.length - 1 ? ", " : ""}</span>
             ))}

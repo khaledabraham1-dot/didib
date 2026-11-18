@@ -34,15 +34,28 @@ const MASK = `url("data:image/svg+xml,${encodeURIComponent(svg)}"), linear-gradi
 export function Loader() {
   const [stage, setStage] = useState<"rise" | "open" | "done">(play ? "rise" : "done");
   const ref = useRef<HTMLDivElement>(null);
+  const pct = useRef<HTMLSpanElement>(null);
+  const bar = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     if (!play) return;
     lockScroll(true);
     const t = setTimeout(() => setStage("open"), 1250);
+    // compteur 0 → 100 % calé sur la montée des piliers (écrit dans le DOM, sans re-rendu)
+    const t0 = performance.now();
+    let raf = 0;
+    const tick = (now: number) => {
+      const k = Math.min(1, (now - t0) / 1150);
+      const e = 1 - Math.pow(1 - k, 2.4);
+      if (pct.current) pct.current.textContent = String(Math.round(e * 100)).padStart(3, "0");
+      if (bar.current) bar.current.style.transform = `scaleX(${e})`;
+      if (k < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
     const skip = () => setStage((s) => (s === "rise" ? "open" : s));
     addEventListener("pointerdown", skip, { once: true });
     addEventListener("keydown", skip, { once: true });
-    return () => { clearTimeout(t); removeEventListener("pointerdown", skip); removeEventListener("keydown", skip); };
+    return () => { clearTimeout(t); cancelAnimationFrame(raf); removeEventListener("pointerdown", skip); removeEventListener("keydown", skip); };
   }, []);
 
   useEffect(() => {
@@ -87,6 +100,22 @@ export function Loader() {
       >
         Le trône s'éveille
       </motion.p>
+      <motion.div className="absolute inset-x-5 bottom-6 md:inset-x-10" animate={{ opacity: open ? 0 : 1 }} transition={{ duration: 0.2 }}>
+        <div className="label flex items-end justify-between text-ash">
+          <span>Mojotrône · Abidjan</span>
+          <span className="font-display text-heading not-italic tabular-nums tracking-normal text-ivory"><span ref={pct}>000</span><span className="text-brass">%</span></span>
+        </div>
+        <span className="mt-3 block h-px w-full bg-ivory/10"><span ref={bar} className="block h-full origin-left scale-x-0 bg-brass" /></span>
+      </motion.div>
+      {/* clavier : n'importe quelle touche passe déjà l'intro, d'où tabIndex -1 */}
+      <button
+        type="button"
+        tabIndex={-1}
+        onClick={() => setStage((s) => (s === "rise" ? "open" : s))}
+        className={`label absolute right-5 top-5 cursor-pointer border hairline px-4 py-2 text-ivory/70 transition-colors hover:border-brass hover:text-ivory md:right-10 ${open ? "opacity-0" : ""}`}
+      >
+        Passer
+      </button>
     </div>
   );
 }

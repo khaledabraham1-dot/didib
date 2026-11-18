@@ -92,6 +92,9 @@ export async function toggle(id: string, trackId: number) {
   }
 }
 
+/** Lecture hors React (boucles de rendu 3D). */
+export const playerState = () => state;
+
 export function usePlayer() {
   return useSyncExternalStore(
     (l) => { listeners.add(l); return () => listeners.delete(l); },

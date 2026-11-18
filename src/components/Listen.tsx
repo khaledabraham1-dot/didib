@@ -29,7 +29,7 @@ function ClipPlayer({ clip, featured = false, index }: { clip: Clip; featured?: 
           <iframe
             className="absolute inset-0 size-full"
             src={`https://www.youtube-nocookie.com/embed/${clip.id}?autoplay=1&rel=0&modestbranding=1`}
-            title={`Didi B — ${label} (clip officiel)`}
+            title={`Didi B, ${label} (clip officiel)`}
             allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
             allowFullScreen
           />
@@ -68,7 +68,7 @@ function SpotifyPlayer() {
         <iframe
           className="size-full"
           src={`https://open.spotify.com/embed/album/${latest.spotifyAlbum}?theme=0`}
-          title={`Didi B — ${latest.title} sur Spotify`}
+          title={`Didi B, ${latest.title} sur Spotify`}
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
           loading="lazy"
         />
@@ -98,7 +98,7 @@ export function Listen() {
       <div className="mx-auto max-w-[1440px]">
         <div className="grid gap-12 md:grid-cols-[1fr_minmax(0,460px)] md:items-end md:gap-20">
           <div>
-            <p className="label text-brass">II — Écouter</p>
+            <p className="label text-brass">II · Écouter</p>
             <h2 className="mt-3 font-display text-subtitle">Le son du trône</h2>
             <p className="mt-6 max-w-md text-lg leading-snug text-ivory/75">
               Le nouvel album, {latest.title}, et les clips officiels. Un clic, et la cour s'allume.

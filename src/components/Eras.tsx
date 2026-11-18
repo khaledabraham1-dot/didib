@@ -1,11 +1,16 @@
 import { motion, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Pause, Play } from "lucide-react";
 import { toast } from "sonner";
-import { toggle, usePlayer } from "@/lib/player";
+import { playerState, toggle, usePlayer } from "@/lib/player";
 import { coverUrl, eras, stream, type Era } from "@/data";
 import { cn, roman } from "@/lib/utils";
 import { scrollToY } from "@/lib/scroll";
+import { webglAvailable } from "@/three/support";
+
+// Mode 3D : chaque disque enregistre son bouton ; un seul canvas WebGL dessine les cinq vinyles.
+type Register = (n: number, el: HTMLElement | null, spin?: MotionValue<number>) => void;
+const Vinyl3D = createContext<Register | null>(null);
 
 function useDesktop() {
   const [d, setD] = useState(() => typeof window !== "undefined" && matchMedia("(min-width: 768px)").matches);
@@ -44,6 +49,26 @@ function Disc({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
   const loading = mine && player.status === "loading";
   const onClick = () =>
     toggle(id, era.track.id).catch(() => toast.error("Extrait indisponible pour le moment. Écoutez l'album sur les plateformes."));
+
+  const register = useContext(Vinyl3D);
+  if (register) {
+    return (
+      <div className="relative w-[min(68vw,340px)] shrink-0 md:w-[min(32vw,440px)]">
+        <button
+          ref={(el) => register(era.n, el, spin)}
+          type="button"
+          onClick={onClick}
+          className="group relative block aspect-square w-full cursor-pointer rounded-full"
+          aria-label={`${playing ? "Mettre en pause" : "Écouter"} l'extrait de ${era.track.title}, album ${era.title}`}
+          aria-pressed={playing}
+        >
+          <span className={cn("absolute inset-0 grid place-items-center transition-opacity duration-500", playing || loading ? "opacity-0" : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100")}>
+            <span className="grid size-14 place-items-center bg-brass text-obsidian"><Play className="size-5 fill-current" aria-hidden /></span>
+          </span>
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-[min(68vw,340px)] shrink-0 md:w-[min(32vw,440px)]">
@@ -163,12 +188,50 @@ export function Eras() {
     scrollToY(top);
   };
 
+  // --- vinyles 3D ---
+  const [gl] = useState(webglAvailable);
+  const canvas = useRef<HTMLCanvasElement>(null);
+  const discs = useRef(new Map<number, { el: HTMLElement; spin?: MotionValue<number> }>());
+  const register = useCallback<Register>((n, el, sp) => {
+    if (el) discs.current.set(n, { el, spin: sp });
+    else discs.current.delete(n);
+  }, []);
+  useEffect(() => {
+    if (!gl || !canvas.current) return;
+    const cv = canvas.current;
+    let dead = false;
+    let api: { dispose(): void } | null = null;
+    import("@/three/vinyl").then(({ mountVinyls }) => {
+      if (dead) return;
+      api = mountVinyls(cv, () =>
+        eras.flatMap((e) => {
+          const d = discs.current.get(e.n);
+          if (!d) return [];
+          return [{
+            el: d.el,
+            cover: coverUrl(e.cover, 500),
+            hue: e.hue,
+            spin: () => d.spin?.get() ?? 0,
+            state: () => {
+              const p = playerState();
+              const mine = p.id === `era-${e.n}`;
+              return { playing: mine && p.status === "playing", loading: mine && p.status === "loading" };
+            },
+          }];
+        }),
+      );
+    });
+    return () => { dead = true; api?.dispose(); };
+  }, [gl]);
+
   return (
+    <Vinyl3D.Provider value={gl ? register : null}>
     <section id="eres" ref={ref} className="relative bg-ink md:h-[300vh]">
-      <div className="md:sticky md:top-0 md:flex md:h-screen md:flex-col md:overflow-hidden">
-        <header className="flex items-end justify-between px-5 pb-8 pt-24 md:px-10 md:pt-24">
+      <div className="relative md:sticky md:top-0 md:flex md:h-screen md:flex-col md:overflow-hidden">
+        {gl && <canvas ref={canvas} className="pointer-events-none absolute inset-0 z-0 size-full" aria-hidden />}
+        <header className="relative z-[1] flex items-end justify-between px-5 pb-8 pt-24 md:px-10 md:pt-24">
           <div>
-            <p className="label text-brass">I — Discographie</p>
+            <p className="label text-brass">I · Discographie</p>
             <h2 className="mt-3 font-display text-subtitle">Les cinq ères</h2>
           </div>
           {/* les piliers du trône : indicateur et navigation */}
@@ -189,7 +252,7 @@ export function Eras() {
           </nav>
         </header>
         {desktop ? (
-          <motion.div style={{ x, width: `${eras.length * 100}%` }} className="flex flex-1 items-center">
+          <motion.div style={{ x, width: `${eras.length * 100}%` }} className="relative z-[1] flex flex-1 items-center">
             {eras.map((e) => (
               <div key={e.n} className="flex h-full w-full items-center justify-center">
                 <Card era={e} spin={spin} />
@@ -197,11 +260,12 @@ export function Eras() {
             ))}
           </motion.div>
         ) : (
-          <div className="flex snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-20 [scrollbar-width:none]">
+          <div className="relative z-[1] flex snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-20 [scrollbar-width:none]">
             {eras.map((e) => <Card key={e.n} era={e} />)}
           </div>
         )}
       </div>
     </section>
+    </Vinyl3D.Provider>
   );
 }

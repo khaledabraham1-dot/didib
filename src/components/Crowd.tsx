@@ -1,5 +1,6 @@
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useEffect, useRef } from "react";
+import { webglAvailable } from "@/three/support";
 
 /*
  * 30 000 points = 30 000 personnes.
@@ -87,6 +88,21 @@ export function Crowd() {
 
   useEffect(() => {
     const cv = canvas.current!;
+
+    // Version 3D (WebGL) : le stade en volume. Chargée à la demande, three.js reste hors du paquet principal.
+    if (webglAvailable()) {
+      let dead = false;
+      let api: { setProgress(v: number): void; dispose(): void } | null = null;
+      document.fonts.load(`italic 400 100px ${FONT}`).catch(() => {}).then(() => import("@/three/stadium")).then((m) => {
+        if (dead) return;
+        api = m.mountStadium(cv, { people: PEOPLE, stage: STAGE });
+        api.setProgress(progress.current);
+        draw.current = () => api?.setProgress(progress.current);
+      });
+      return () => { dead = true; api?.dispose(); draw.current = () => {}; };
+    }
+
+    // Repli 2D (sans WebGL)
     const ctx = cv.getContext("2d")!;
     let f: Field | null = null;
     let W = 0, H = 0, raf = 0, visible = false;

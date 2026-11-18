@@ -26,6 +26,6 @@ export function scrollToY(top: number) {
 
 /** Bloque ou relance le défilement (intro, menus). */
 export function lockScroll(locked: boolean) {
-  if (lenis) (locked ? lenis.stop() : lenis.start());
+  if (lenis) { if (locked) lenis.stop(); else lenis.start(); }
   document.documentElement.style.overflow = locked ? "hidden" : "";
 }
