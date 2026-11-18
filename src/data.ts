@@ -1,11 +1,37 @@
 // Contenu du site. Toutes les informations factuelles viennent de sources publiques
 // (voir README). Les éléments marqués TODO sont à fournir par l'équipe de l'artiste.
 
+// Identifiants officiels, vérifiés le 18.11.2026 : Wikidata (Q115791127), recoupé avec la presse,
+// l'oEmbed Spotify et le flux de la chaîne YouTube. Ne pas remplacer par des comptes de fans.
+export const official = {
+  spotifyArtist: "2FwWGogJ04HZdALWeMxZA4",
+  appleMusicArtist: "549549219",
+  deezerArtist: "6412878",
+  youtubeChannel: "UClzKdPhr7GrMtFFVcgpMiLg", // @DidiBVEVO
+} as const;
+
+export const platforms = [
+  { name: "Spotify", href: `https://open.spotify.com/artist/${official.spotifyArtist}` },
+  { name: "Apple Music", href: `https://music.apple.com/artist/${official.appleMusicArtist}` },
+  { name: "Deezer", href: `https://www.deezer.com/artist/${official.deezerArtist}` },
+  { name: "YouTube", href: `https://www.youtube.com/channel/${official.youtubeChannel}` },
+];
+
+// Liens par album : recherche ciblée sur chaque plateforme (pas d'identifiant d'album vérifié).
 const q = (s: string) => encodeURIComponent(`Didi B ${s}`);
 export const stream = (title: string) => [
   { name: "Spotify", href: `https://open.spotify.com/search/${q(title)}` },
   { name: "Apple Music", href: `https://music.apple.com/search?term=${q(title)}` },
   { name: "YouTube", href: `https://www.youtube.com/results?search_query=${q(title)}` },
+];
+
+// Clips : uniquement ceux publiés par les chaînes officielles (@DidiBVEVO, @DidiBKiffnobeatTV).
+export type Clip = { id: string; title: string; feat?: string };
+export const clips: Clip[] = [
+  { id: "v2p1IwUcYp0", title: "Malade", feat: "Khaid" },
+  { id: "oJpfbw2uQAc", title: "Juru", feat: "Tayc" },
+  { id: "Ses4nRv7IQI", title: "Igbo" },
+  { id: "HsRileLIU1g", title: "IPRC" },
 ];
 
 export type Era = {
@@ -44,12 +70,13 @@ export const merch = [
   { name: "Vinyle History", tag: "Mojotrône II" },
 ];
 
-// TODO : remplacer par les vrais liens officiels de l'artiste
+// Réseaux officiels (source : Wikidata Q115791127, recoupé avec la presse ivoirienne)
 export const socials = [
-  { name: "Instagram", href: "#" },
-  { name: "TikTok", href: "#" },
-  { name: "YouTube", href: "#" },
-  { name: "Facebook", href: "#" },
+  { name: "Instagram", href: "https://www.instagram.com/didibofficial/" },
+  { name: "TikTok", href: "https://www.tiktok.com/@didib.mojaveli" },
+  { name: "YouTube", href: `https://www.youtube.com/channel/${official.youtubeChannel}` },
+  { name: "Facebook", href: "https://www.facebook.com/DidiBkiffnobeat" },
+  { name: "X", href: "https://x.com/Didibofficial" },
 ];
 
 // Photos : Wikimedia Commons, licence CC BY-SA 4.0. Étalonnées en duotone laiton par SK DIGITAL

@@ -9,7 +9,7 @@ export function Footer() {
           <Mark size={56} />
           <ul className="flex flex-wrap gap-x-8 gap-y-3">
             {socials.map((s) => (
-              <li key={s.name}><a href={s.href} className="label text-ivory/70 transition-colors hover:text-brass">{s.name}</a></li>
+              <li key={s.name}><a href={s.href} target="_blank" rel="noreferrer" className="label text-ivory/70 transition-colors hover:text-brass">{s.name}<span className="sr-only"> (nouvel onglet)</span></a></li>
             ))}
           </ul>
         </div>

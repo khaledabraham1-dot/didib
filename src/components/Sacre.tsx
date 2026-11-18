@@ -28,7 +28,7 @@ export function Sacre() {
   return (
     <section id="sacre" className="grain relative overflow-hidden bg-obsidian py-32 md:py-48">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-        <p className="label text-brass">II — Sur scène</p>
+        <p className="label text-brass">III — Sur scène</p>
         <div className="mt-6 grid gap-10 md:grid-cols-[1.3fr_1fr] md:items-end">
           <h2 className="font-display text-stat italic tracking-[-.04em]">
             <span className="sr-only">Plus de 30 000</span>

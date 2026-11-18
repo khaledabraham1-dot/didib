@@ -4,7 +4,7 @@ import { ArrowDownRight, Play } from "lucide-react";
 import { Beams } from "./Beams";
 import { Button } from "./ui/button";
 import { INTRO } from "./Loader";
-import { photos, photoUrl, stream } from "@/data";
+import { photos, photoUrl } from "@/data";
 
 const ease = [0.7, 0, 0.2, 1] as const;
 const Letter = ({ c, i }: { c: string; i: number }) => (
@@ -21,7 +21,6 @@ export function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "35%"]);
   const photoY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-  const listen = stream("Juventus Nueva Era")[0].href;
   const d = INTRO + 0.5;
 
   return (
@@ -70,7 +69,7 @@ export function Hero() {
           </motion.p>
           <motion.div className="flex flex-wrap gap-3" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: d + 0.15, duration: 0.8 }}>
             <Button asChild variant="crown" size="lg">
-              <a href={listen} target="_blank" rel="noreferrer"><span className="relative z-10 inline-flex items-center gap-3"><Play className="fill-current" />Écouter Nueva Era<span className="sr-only"> (nouvel onglet)</span></span></a>
+              <a href="#ecouter"><span className="relative z-10 inline-flex items-center gap-3"><Play className="fill-current" />Écouter Didi B</span></a>
             </Button>
             <Button asChild variant="outline" size="lg" className="bg-obsidian/40 backdrop-blur-sm">
               <a href="#eres"><span className="relative z-10 inline-flex items-center gap-3">Les cinq ères<ArrowDownRight /></span></a>

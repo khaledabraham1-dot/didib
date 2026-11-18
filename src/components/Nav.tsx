@@ -22,6 +22,7 @@ function useActive(ids: string[]) {
 
 export const links = [
   { id: "eres", label: "Les ères" },
+  { id: "ecouter", label: "Écouter" },
   { id: "sacre", label: "Le sacre" },
   { id: "diyilem", label: "Diyilem" },
   { id: "boutique", label: "Boutique" },
@@ -41,7 +42,7 @@ export function Nav() {
           <Mark size={26} />
           <span className="font-sans font-wide text-[15px] font-extrabold tracking-[.18em]">DIDI B</span>
         </a>
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center gap-7 lg:flex">
           {links.map((l, i) => (
             <li key={l.id}>
               <a
@@ -58,7 +59,7 @@ export function Nav() {
         </ul>
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden" aria-label="Ouvrir le menu">
+            <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Ouvrir le menu">
               <Menu />
             </Button>
           </SheetTrigger>
@@ -76,7 +77,7 @@ export function Nav() {
                   <SheetClose asChild>
                     <a href={`#${l.id}`} className="flex items-baseline gap-4">
                       <span className="w-10 font-display text-xl text-brass">{roman(i + 1)}</span>
-                      <span className="font-display text-5xl italic leading-none">{l.label}</span>
+                      <span className="font-display text-[clamp(36px,11vw,48px)] italic leading-none">{l.label}</span>
                     </a>
                   </SheetClose>
                 </li>

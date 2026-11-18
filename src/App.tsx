@@ -5,6 +5,7 @@ import { Nav } from "./components/Nav";
 import { Hero } from "./components/Hero";
 import { Ticker } from "./components/Ticker";
 import { Eras } from "./components/Eras";
+import { Listen } from "./components/Listen";
 import { Sacre } from "./components/Sacre";
 import { Story } from "./components/Story";
 import { Shop } from "./components/Shop";
@@ -21,6 +22,7 @@ export default function App() {
         <Hero />
         <Ticker />
         <Eras />
+        <Listen />
         <Sacre />
         <Story />
         <Shop />

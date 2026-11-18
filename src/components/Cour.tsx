@@ -17,7 +17,7 @@ export function Cour() {
     <section id="cour" className="grain relative overflow-hidden bg-blood px-5 py-28 md:px-10 md:py-40">
       <div className="mx-auto grid max-w-[1440px] gap-12 md:grid-cols-2 md:items-end">
         <div>
-          <p className="label text-obsidian/80">V — La cour</p>
+          <p className="label text-obsidian/80">VI — La cour</p>
           <h2 className="mt-4 font-display text-title italic tracking-[-.03em]">Entrer<br />dans la cour.</h2>
         </div>
         <form onSubmit={submit} className="flex flex-col gap-6">

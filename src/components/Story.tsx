@@ -25,7 +25,7 @@ export function Story() {
           />
         </div>
         <div>
-          <p className="label text-brass-soft">III — Diyilem</p>
+          <p className="label text-brass-soft">IV — Diyilem</p>
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
