@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { SignePhoto } from "./SignePhoto";
+import { Transmission } from "./Transmission";
 import { Mark } from "./Mark";
 import { lockScroll } from "@/lib/scroll";
 
 /*
  * Le sacre d'ouverture.
- * 0. Le signe de la Conspiration (photo) : les deux mains en C se rejoignent, éclair, « Bienvenue dans la Conspiration ».
+ * 0. « La transmission » : texte chiffré qui se décode, photo du signe sous une lampe torche, sceau de cire « C ».
  * 1. Les cinq piliers du trône se dressent.
  * 2. Le rideau noir se perce à la forme exacte du logo : la scène apparaît à travers les piliers.
  * 3. La découpe grandit jusqu'à ce que le pilier central avale l'écran.
@@ -24,8 +24,8 @@ const firstVisit = (() => {
 const play = firstVisit && !reduce;
 
 /** Délai (s) avant les animations d'entrée du héros. */
-export const INTRO = play ? 4.0 : 0.1;
-const SIGN_MS = 1700, RISE_MS = 2800; // fin du signe, puis ouverture
+export const INTRO = play ? 4.5 : 0.1;
+const SIGN_MS = 2400, RISE_MS = 3300; // fin du signe, puis ouverture
 
 const MARK = 72; // taille du logo à l'écran, en px
 // Même géométrie que <Mark /> : la découpe épouse exactement le logo.
@@ -37,22 +37,20 @@ const MASK = `url("data:image/svg+xml,${encodeURIComponent(svg)}"), linear-gradi
 export function Loader() {
   const [stage, setStage] = useState<"sign" | "rise" | "open" | "done">(play ? "sign" : "done");
   const ref = useRef<HTMLDivElement>(null);
-  const pct = useRef<HTMLSpanElement>(null);
-  const bar = useRef<HTMLSpanElement>(null);
+  const pillars = useRef<(HTMLSpanElement | null)[]>([]);
 
   useEffect(() => {
     if (!play) return;
     lockScroll(true);
     const t1 = setTimeout(() => setStage((s) => (s === "sign" ? "rise" : s)), SIGN_MS);
     const t = setTimeout(() => setStage((s) => (s === "sign" || s === "rise" ? "open" : s)), RISE_MS);
-    // compteur 0 → 100 % calé sur la montée des piliers (écrit dans le DOM, sans re-rendu)
+    // progression : cinq piliers qui se remplissent un à un (écrit dans le DOM, sans re-rendu)
     const t0 = performance.now();
     let raf = 0;
     const tick = (now: number) => {
       const k = Math.min(1, (now - t0) / (RISE_MS - 100));
       const e = 1 - Math.pow(1 - k, 2.4);
-      if (pct.current) pct.current.textContent = String(Math.round(e * 100)).padStart(3, "0");
-      if (bar.current) bar.current.style.transform = `scaleX(${e})`;
+      pillars.current.forEach((el, i) => el && (el.style.transform = `scaleY(${Math.min(1, Math.max(0, e * 5 - i))})`));
       if (k < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -99,25 +97,10 @@ export function Loader() {
           <motion.div
             key="sign"
             className="absolute inset-0 grid place-items-center"
-            exit={{ scale: 1.18, opacity: 0, filter: "blur(6px)" }}
+            exit={{ scale: 0.92, opacity: 0, filter: "blur(8px)" }}
             transition={{ duration: 0.5, ease: [0.7, 0, 0.84, 0] }}
           >
-            {/* le C en filigrane, immense */}
-            <motion.span
-              className="pointer-events-none absolute select-none font-display text-[min(150vw,130vh)] italic leading-none text-transparent [-webkit-text-stroke:1px_rgba(201,162,75,.22)]"
-              initial={{ scale: 0.55, opacity: 0, rotate: -8 }}
-              animate={{ scale: 1, opacity: 1, rotate: 0 }}
-              transition={{ delay: 0.75, duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
-            >
-              C
-            </motion.span>
-            <div className="relative flex flex-col items-center gap-6">
-              <SignePhoto delay={0.05} />
-              <p className="text-center font-display leading-[.95]">
-                <Split text="Bienvenue" delay={1.15} className="block text-[clamp(30px,5vw,56px)] text-ivory" />
-                <Split text="dans la Conspiration" delay={1.3} className="block text-[clamp(30px,5vw,56px)] italic text-brass" />
-              </p>
-            </div>
+            <Transmission delay={0.1} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -137,12 +120,18 @@ export function Loader() {
           Le trône s'éveille
         </motion.p>
       )}
-      <motion.div className="absolute inset-x-5 bottom-6 md:inset-x-10" animate={{ opacity: open ? 0 : 1 }} transition={{ duration: 0.2 }}>
-        <div className="label flex items-end justify-between text-ash">
-          <span>La Conspiration · Abidjan</span>
-          <span className="font-display text-heading not-italic tabular-nums tracking-normal text-ivory"><span ref={pct}>000</span><span className="text-brass">%</span></span>
-        </div>
-        <span className="mt-3 block h-px w-full bg-ivory/10"><span ref={bar} className="block h-full origin-left scale-x-0 bg-brass" /></span>
+      {/* lignes de balayage, comme un vieil écran de surveillance */}
+      <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(239,232,218,.035)_0_1px,transparent_1px_3px)]" aria-hidden />
+      <motion.div className="absolute inset-x-5 bottom-6 flex items-end justify-between md:inset-x-10" animate={{ opacity: open ? 0 : 1 }} transition={{ duration: 0.2 }}>
+        <span className="label text-ash">5°19′N · 4°01′W · Abidjan</span>
+        {/* progression : les cinq piliers du trône */}
+        <span className="flex items-end gap-1.5" aria-hidden>
+          {[12, 18, 24, 18, 12].map((h, i) => (
+            <span key={i} className="relative w-1.5 bg-ivory/10" style={{ height: h }}>
+              <span ref={(el) => { pillars.current[i] = el; }} className={`absolute inset-0 origin-bottom scale-y-0 ${i === 4 ? "bg-blood" : "bg-brass"}`} />
+            </span>
+          ))}
+        </span>
       </motion.div>
       {/* clavier : n'importe quelle touche passe déjà l'intro, d'où tabIndex -1 */}
       <button
@@ -151,28 +140,8 @@ export function Loader() {
         onClick={() => setStage((s) => (s === "sign" || s === "rise" ? "open" : s))}
         className={`label absolute right-5 top-5 cursor-pointer border hairline px-4 py-2 text-ivory/70 transition-colors hover:border-brass hover:text-ivory md:right-10 ${open ? "opacity-0" : ""}`}
       >
-        Passer
+        Entrer
       </button>
     </div>
-  );
-}
-
-/** Titre découpé en lettres qui montent une à une. */
-function Split({ text, delay, className }: { text: string; delay: number; className?: string }) {
-  return (
-    <span className={className} aria-label={text}>
-      {text.split("").map((c, i) => (
-        <span key={i} className="inline-block overflow-hidden pb-[.12em] align-bottom" aria-hidden>
-          <motion.span
-            className="inline-block"
-            initial={{ y: "115%" }}
-            animate={{ y: 0 }}
-            transition={{ delay: delay + i * 0.022, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {c === " " ? " " : c}
-          </motion.span>
-        </span>
-      ))}
-    </span>
   );
 }

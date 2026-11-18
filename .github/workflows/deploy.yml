@@ -40,5 +40,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # Si Pages est (re)configuré sur « Deploy from a branch », GitHub lance aussi son propre
+      # déploiement du code source brut (page noire). On passe en dernier pour qu'il ne nous écrase pas.
+      - name: Laisser passer le déploiement automatique de branche
+        run: sleep 75
       - id: deployment
         uses: actions/deploy-pages@v4
