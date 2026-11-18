@@ -29,9 +29,9 @@ export function Hero() {
       <motion.div style={{ y: photoY }} className="absolute inset-0">
         <motion.picture
           className="block size-full"
-          initial={{ scale: 1.12, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: INTRO - 0.1, duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ scale: 1.22 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: Math.max(0, INTRO - 1.5), duration: 2.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <source media="(min-width: 768px)" srcSet={`${photoUrl("hero-1080.webp")} 1080w, ${photoUrl("hero-1920.webp")} 1920w`} sizes="100vw" />
           <img

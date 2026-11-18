@@ -1,8 +1,11 @@
 import { motion, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
-import { eras, stream, type Era } from "@/data";
+import { ArrowUpRight, Pause, Play } from "lucide-react";
+import { toast } from "sonner";
+import { toggle, usePlayer } from "@/lib/player";
+import { coverUrl, eras, stream, type Era } from "@/data";
 import { cn, roman } from "@/lib/utils";
+import { scrollToY } from "@/lib/scroll";
 
 function useDesktop() {
   const [d, setD] = useState(() => typeof window !== "undefined" && matchMedia("(min-width: 768px)").matches);
@@ -15,28 +18,93 @@ function useDesktop() {
   return d;
 }
 
-function Disc({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
+function Tonearm({ on }: { on: boolean }) {
+  // bras de lecture : repos hors du disque, se pose sur les sillons pendant la lecture
   return (
-    <motion.div
-      className="relative aspect-square w-[min(68vw,340px)] rounded-full shadow-[0_40px_80px_-20px_rgba(0,0,0,.8)] md:w-[min(34vw,460px)]"
-      style={{
-        rotate: spin,
-        background: `radial-gradient(circle at 50% 50%, ${era.hue} 0 17%, #0b0a08 17.4% 18%, transparent 18.2%), repeating-radial-gradient(circle at 50% 50%, #12100c 0 1.6px, #1b1812 1.6px 3.2px)`,
-      }}
+    <svg
+      viewBox="0 0 40 200"
+      className="pointer-events-none absolute -right-[9%] -top-[6%] h-[82%] w-[16%] transition-transform duration-[900ms] ease-[var(--ease-throne)]"
+      style={{ transformOrigin: "50% 7%", transform: `rotate(${on ? 24 : 2}deg)` }}
       aria-hidden
     >
-      <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_40deg,transparent_0_20%,rgba(239,232,218,.10)_25%,transparent_32%_70%,rgba(239,232,218,.07)_75%,transparent_80%)]" />
-      <div className="absolute inset-[34%] grid place-items-center rounded-full text-center">
-        <span className="font-display text-[clamp(18px,3vw,34px)] italic leading-none text-ivory/90">{roman(era.n)}</span>
-      </div>
-      <div className="absolute left-1/2 top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-obsidian" />
-    </motion.div>
+      <circle cx="20" cy="14" r="11" fill="#1d1a14" stroke="#c9a24b" strokeWidth="1.2" />
+      <circle cx="20" cy="14" r="4" fill="#c9a24b" />
+      <line x1="20" y1="14" x2="20" y2="168" stroke="#c9a24b" strokeWidth="2.6" strokeLinecap="square" />
+      <rect x="13" y="166" width="14" height="24" fill="#c9a24b" />
+      <rect x="17" y="190" width="6" height="6" fill="#efe8da" />
+    </svg>
+  );
+}
+
+function Disc({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
+  const player = usePlayer();
+  const id = `era-${era.n}`;
+  const mine = player.id === id;
+  const playing = mine && player.status === "playing";
+  const loading = mine && player.status === "loading";
+  const onClick = () =>
+    toggle(id, era.track.id).catch(() => toast.error("Extrait indisponible pour le moment. Écoutez l'album sur les plateformes."));
+
+  return (
+    <div className="relative w-[min(68vw,340px)] shrink-0 md:w-[min(32vw,440px)]">
+      {/* halo qui bat au rythme réel du morceau (--beat, 0 à 1) */}
+      <div
+        className={cn("pointer-events-none absolute -inset-[14%] rounded-full transition-opacity duration-700", playing ? "opacity-100" : "opacity-0")}
+        style={{
+          background: `radial-gradient(circle, ${era.hue}cc 0%, transparent 62%)`,
+          transform: "scale(calc(.92 + var(--beat, 0) * .22))",
+          opacity: playing ? "calc(.35 + var(--beat, 0) * .65)" : undefined,
+        }}
+        aria-hidden
+      />
+      <button
+        type="button"
+        onClick={onClick}
+        className="group relative block aspect-square w-full cursor-pointer rounded-full"
+        aria-label={`${playing ? "Mettre en pause" : "Écouter"} l'extrait de ${era.track.title}, album ${era.title}`}
+        aria-pressed={playing}
+      >
+        <motion.span className="absolute inset-0 block rounded-full shadow-[0_40px_80px_-20px_rgba(0,0,0,.8)]" style={{ rotate: spin }}>
+          <span
+            className="absolute inset-0 block animate-[spin_1.8s_linear_infinite] rounded-full"
+            style={{
+              animationPlayState: playing ? "running" : "paused",
+              background: `radial-gradient(circle at 50% 50%, #0b0a08 0 17.6%, transparent 18.2%), repeating-radial-gradient(circle at 50% 50%, #12100c 0 1.6px, #1b1812 1.6px 3.2px)`,
+            }}
+          >
+            {/* pochette officielle en étiquette centrale */}
+            <img
+              src={coverUrl(era.cover, 250)}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className={cn(
+                "absolute inset-[33%] size-[34%] rounded-full object-cover transition-[filter] duration-700",
+                playing ? "[filter:none]" : "[filter:grayscale(1)_sepia(.5)_brightness(.8)] group-hover:[filter:none]",
+              )}
+            />
+            <span className="absolute left-1/2 top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-obsidian" />
+          </span>
+          <span className="absolute inset-0 rounded-full bg-[conic-gradient(from_40deg,transparent_0_20%,rgba(239,232,218,.10)_25%,transparent_32%_70%,rgba(239,232,218,.07)_75%,transparent_80%)]" />
+        </motion.span>
+        <span className={cn("absolute inset-0 grid place-items-center transition-opacity duration-500", playing || loading ? "opacity-0" : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100")}>
+          <span className="grid size-14 place-items-center bg-brass text-obsidian"><Play className="size-5 fill-current" aria-hidden /></span>
+        </span>
+      </button>
+      <Tonearm on={playing || loading} />
+    </div>
   );
 }
 
 function Card({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
+  const player = usePlayer();
+  const id = `era-${era.n}`;
+  const mine = player.id === id;
+  const playing = mine && player.status === "playing";
+  const onClick = () =>
+    toggle(id, era.track.id).catch(() => toast.error("Extrait indisponible pour le moment. Écoutez l'album sur les plateformes."));
   return (
-    <article className="relative flex w-[86vw] shrink-0 snap-center flex-col gap-8 md:h-full md:w-[78vw] md:flex-row md:items-center md:gap-16 md:px-10">
+    <article className="relative flex w-[86vw] shrink-0 snap-center flex-col gap-10 md:h-full md:w-[78vw] md:flex-row md:items-center md:gap-20 md:px-10">
       <span className="pointer-events-none absolute -top-6 right-0 select-none font-display text-[38vw] italic leading-none text-transparent [-webkit-text-stroke:1px_rgba(201,162,75,.18)] md:-top-10 md:text-[24vw]" aria-hidden>
         {roman(era.n)}
       </span>
@@ -48,7 +116,22 @@ function Card({ era, spin }: { era: Era; spin?: MotionValue<number> }) {
         <h3 className="mt-3 font-display text-title italic tracking-[-.03em]">{era.title}</h3>
         <p className="mt-2 font-sans font-wide text-sm uppercase tracking-[.2em] text-ash">{era.kicker}</p>
         <p className="mt-6 max-w-sm text-lg leading-snug text-ivory/80">{era.line}</p>
-        <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
+
+        {/* extrait officiel */}
+        <button type="button" onClick={onClick} className="group mt-8 flex w-full max-w-sm cursor-pointer items-center gap-4 border hairline px-4 py-3 text-left transition-colors hover:border-brass" aria-pressed={playing}>
+          <span className="grid size-10 shrink-0 place-items-center bg-brass text-obsidian">
+            {playing ? <Pause className="size-4 fill-current" aria-hidden /> : <Play className="size-4 fill-current" aria-hidden />}
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="label block text-ash">{mine && player.status === "loading" ? "Chargement…" : "Extrait · 30 s"}</span>
+            <span className="mt-0.5 block truncate font-display text-xl italic">{era.track.title}</span>
+            <span className="mt-2 block h-px w-full bg-ivory/15">
+              <span className="block h-full origin-left bg-brass transition-transform duration-300 ease-linear" style={{ transform: `scaleX(${mine ? player.progress : 0})` }} />
+            </span>
+          </span>
+        </button>
+
+        <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
           {stream(era.title).map((s) => (
             <li key={s.name}>
               <a href={s.href} target="_blank" rel="noreferrer" className="label inline-flex items-center gap-1 text-ivory/70 transition-colors hover:text-brass">
@@ -77,7 +160,7 @@ export function Eras() {
     const el = ref.current;
     if (!el) return;
     const top = el.offsetTop + (i / (eras.length - 1)) * (el.offsetHeight - innerHeight);
-    window.scrollTo({ top, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    scrollToY(top);
   };
 
   return (

@@ -52,15 +52,19 @@ export type Era = {
   kicker: string;
   line: string;
   hue: string; // couleur de l'ère, utilisée pour le disque
+  // Deezer (données du label) : pochette et extrait officiel de 30 s du titre le plus écouté de l'album
+  cover: string;
+  track: { id: number; title: string };
 };
+export const coverUrl = (md5: string, size = 500) => `https://cdn-images.dzcdn.net/images/cover/${md5}/${size}x${size}-000000-80-0-0.jpg`;
 
 // Discographie. Dates : métadonnées des labels (API Apple Music et Deezer), vérifiées le 18.11.2026.
 export const eras: Era[] = [
-  { n: 1, year: "2013", title: "Mojo Trône", kicker: "Vol. 1", line: "Le premier trône. Kiff No Beat pose les fondations.", hue: "#7a5a2a" },
-  { n: 2, year: "2022", title: "History", kicker: "Mojotrône II", line: "Le chapitre qui écrit l'histoire en lettres capitales.", hue: "#a8873f" },
-  { n: 3, year: "2024", title: "Before Olympia", kicker: "EP", line: "Le souffle avant l'Olympia.", hue: "#6b3a2a" },
-  { n: 4, year: "2025", title: "Genius", kicker: "Diyilem & Bazarhoff", line: "Deux faces, un seul génie.", hue: "#5a4128" },
-  { n: 5, year: "2025", title: "Juventus Nueva Era", kicker: "Nouvelle ère", line: "Le règne continue. Une nouvelle génération.", hue: "#b3261e" },
+  { n: 1, year: "2013", title: "Mojo Trône", kicker: "Vol. 1", line: "Le premier trône. Kiff No Beat pose les fondations.", hue: "#7a5a2a", cover: "9d83f29c845a412361b50a3fb7dc09f0", track: { id: 1048045262, title: "Level" } },
+  { n: 2, year: "2022", title: "History", kicker: "Mojotrône II", line: "Le chapitre qui écrit l'histoire en lettres capitales.", hue: "#a8873f", cover: "58ed24b25daaa953e3124147650d634f", track: { id: 1768919167, title: "Tala" } },
+  { n: 3, year: "2024", title: "Before Olympia", kicker: "EP", line: "Le souffle avant l'Olympia.", hue: "#6b3a2a", cover: "8ca0dea1ce52ad26dd1a4a3732e93018", track: { id: 2657809602, title: "Giga de Cali" } },
+  { n: 4, year: "2025", title: "Genius", kicker: "Diyilem & Bazarhoff", line: "Deux faces, un seul génie.", hue: "#5a4128", cover: "9f217fbedd2a5f415834082886314bf1", track: { id: 3381651561, title: "Entre nous deux" } },
+  { n: 5, year: "2025", title: "Juventus Nueva Era", kicker: "Nouvelle ère", line: "Le règne continue. Une nouvelle génération.", hue: "#b3261e", cover: "a879d555931212d02ca9d0c307f4e815", track: { id: 3652093932, title: "En Bri" } },
 ];
 
 // Chronique scénique (source : Wikipédia ; Fraternité Matin ; Abidjan.net)

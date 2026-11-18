@@ -1,22 +1,8 @@
-import { animate, motion, useInView, useReducedMotion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
+import { Crowd } from "./Crowd";
 import { ArrowRight } from "lucide-react";
 import { photos, photoUrl, stages } from "@/data";
 import { Photo } from "./Photo";
-
-function Count({ to }: { to: number }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-20% 0px" });
-  const reduce = useReducedMotion();
-  const [v, setV] = useState(0);
-  useEffect(() => {
-    if (!inView) return;
-    if (reduce) return setV(to);
-    const c = animate(0, to, { duration: 2.4, ease: [0.16, 1, 0.3, 1], onUpdate: (n) => setV(Math.round(n)) });
-    return () => c.stop();
-  }, [inView, to, reduce]);
-  return <span ref={ref} className="tabular-nums">{v.toLocaleString("fr-FR")}</span>;
-}
 
 const gallery = [
   { key: "femua", file: "scene-femua.webp", caption: "FEMUA · Abidjan", className: "md:col-span-7 aspect-[3/2]" },
@@ -26,23 +12,17 @@ const gallery = [
 
 export function Sacre() {
   return (
-    <section id="sacre" className="grain relative overflow-hidden bg-obsidian py-32 md:py-48">
+    <section id="sacre" className="grain relative bg-obsidian pt-28 pb-32 md:pt-40 md:pb-48">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <p className="label text-brass">III — Sur scène</p>
-        <div className="mt-6 grid gap-10 md:grid-cols-[1.3fr_1fr] md:items-end">
-          <h2 className="font-display text-stat italic tracking-[-.04em]">
-            <span className="sr-only">Plus de 30 000</span>
-            <span aria-hidden><Count to={30000} /><span className="text-brass">+</span></span>
-          </h2>
-          <p className="max-w-sm text-lg leading-snug text-ivory/80 md:pb-6">
-            places au <span className="text-ivory">Stade Félix Houphouët-Boigny</span>, le 3 mai 2025. Le Félicia, rempli par un seul nom.
-          </p>
-        </div>
+        <h2 className="sr-only">Plus de 30 000 places au Stade Félix Houphouët-Boigny, le 3 mai 2025 : le Félicia, rempli par un seul nom.</h2>
       </div>
+
+      <Crowd />
 
       {/* plan large : la scène, révélée comme un rideau qui se lève */}
       <motion.div
-        className="mt-20 md:mt-28"
+        className="mt-8 md:mt-12"
         initial={{ clipPath: "inset(18% 0 18% 0)" }}
         whileInView={{ clipPath: "inset(0% 0 0% 0)" }}
         viewport={{ once: true, margin: "-15%" }}
