@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { SigneC } from "./SigneC";
+import { SignePhoto } from "./SignePhoto";
 import { Mark } from "./Mark";
 import { lockScroll } from "@/lib/scroll";
 
 /*
  * Le sacre d'ouverture.
- * 0. Le signe de la Conspiration : la main trace un C, éclair, « Bienvenue dans la Conspiration ».
+ * 0. Le signe de la Conspiration (photo) : les deux mains en C se rejoignent, éclair, « Bienvenue dans la Conspiration ».
  * 1. Les cinq piliers du trône se dressent.
  * 2. Le rideau noir se perce à la forme exacte du logo : la scène apparaît à travers les piliers.
  * 3. La découpe grandit jusqu'à ce que le pilier central avale l'écran.
@@ -112,7 +112,7 @@ export function Loader() {
               C
             </motion.span>
             <div className="relative flex flex-col items-center gap-6">
-              <SigneC delay={0.05} />
+              <SignePhoto delay={0.05} />
               <p className="text-center font-display leading-[.95]">
                 <Split text="Bienvenue" delay={1.15} className="block text-[clamp(30px,5vw,56px)] text-ivory" />
                 <Split text="dans la Conspiration" delay={1.3} className="block text-[clamp(30px,5vw,56px)] italic text-brass" />

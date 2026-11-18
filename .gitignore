@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# originaux sans droits confirmés : ne pas publier
+assets-source/
