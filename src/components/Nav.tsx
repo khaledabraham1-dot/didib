@@ -3,7 +3,22 @@ import { Menu, X } from "lucide-react";
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { Mark } from "./Mark";
-import { roman } from "@/lib/utils";
+import { cn, roman } from "@/lib/utils";
+import { useEffect, useState } from "react";
+
+// section visible au centre de l'écran
+function useActive(ids: string[]) {
+  const [active, setActive] = useState<string | null>(null);
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    ids.forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+    return () => io.disconnect();
+  }, [ids]);
+  return active;
+}
 
 export const links = [
   { id: "eres", label: "Les ères" },
@@ -12,10 +27,12 @@ export const links = [
   { id: "boutique", label: "Boutique" },
   { id: "cour", label: "La cour" },
 ];
+const ids = links.map((l) => l.id);
 
 export function Nav() {
   const { scrollYProgress } = useScroll();
   const x = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
+  const active = useActive(ids);
   return (
     <header className="fixed inset-x-0 top-0 z-40 bg-obsidian/80 backdrop-blur-md">
       <motion.div className="h-[2px] origin-left bg-brass" style={{ scaleX: x }} />
@@ -27,9 +44,14 @@ export function Nav() {
         <ul className="hidden items-center gap-8 md:flex">
           {links.map((l, i) => (
             <li key={l.id}>
-              <a href={`#${l.id}`} className="group label flex items-baseline gap-2 text-ivory/80 transition-colors hover:text-ivory">
-                <span className="font-display text-[11px] normal-case tracking-normal text-brass">{roman(i + 1)}</span>
+              <a
+                href={`#${l.id}`}
+                aria-current={active === l.id ? "location" : undefined}
+                className={cn("group label relative flex items-baseline gap-2 py-2 transition-colors hover:text-ivory", active === l.id ? "text-ivory" : "text-ivory/65")}
+              >
+                <span className="font-display text-[12px] normal-case tracking-normal text-brass">{roman(i + 1)}</span>
                 {l.label}
+                <span className={cn("absolute inset-x-0 -bottom-px h-px origin-left bg-brass transition-transform duration-500 ease-[var(--ease-throne)]", active === l.id ? "scale-x-100" : "scale-x-0")} />
               </a>
             </li>
           ))}

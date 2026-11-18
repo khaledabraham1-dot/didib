@@ -1,4 +1,5 @@
 import { Toaster } from "sonner";
+import { MotionConfig } from "motion/react";
 import { Loader } from "./components/Loader";
 import { Nav } from "./components/Nav";
 import { Hero } from "./components/Hero";
@@ -12,7 +13,7 @@ import { Footer } from "./components/Footer";
 
 export default function App() {
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <a href="#eres" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:bg-brass focus:px-4 focus:py-2 focus:text-obsidian">Aller au contenu</a>
       <Loader />
       <Nav />
@@ -27,6 +28,6 @@ export default function App() {
       </main>
       <Footer />
       <Toaster position="bottom-center" toastOptions={{ style: { background: "#0b0a08", color: "#efe8da", border: "1px solid rgba(201,162,75,.4)", borderRadius: 0, fontFamily: "Archivo Variable" } }} />
-    </>
+    </MotionConfig>
   );
 }

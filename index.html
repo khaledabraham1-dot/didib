@@ -8,6 +8,39 @@
     <meta name="color-scheme" content="dark" />
     <meta name="description" content="DIDI B — Babi Style. Musique, scène, histoire. Concept de site officiel." />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0A08'/%3E%3Cpath d='M7 25V12M11 25V8M16 25V4M21 25V8M25 25V12M5 27h22' stroke='%23C9A24B' stroke-width='2.4' stroke-linecap='square'/%3E%3C/svg%3E" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="preload" as="image" href="./photos/hero-mobile.webp" media="(max-width: 767px)" fetchpriority="high" />
+    <link rel="preload" as="image" imagesrcset="./photos/hero-1080.webp 1080w, ./photos/hero-1920.webp 1920w" imagesizes="100vw" media="(min-width: 768px)" fetchpriority="high" />
+
+    <!-- Partage (WhatsApp, Instagram, X…). Définir VITE_SITE_URL dans .env avec le domaine final. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="DIDI B" />
+    <meta property="og:title" content="DIDI B · Le Trône" />
+    <meta property="og:description" content="Cinq ères, un seul trône. Musique, scène et histoire de Didi B — Babi Style." />
+    <meta property="og:image" content="%VITE_SITE_URL%/photos/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Didi B sur scène, bras levé sous les projecteurs" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "MusicGroup",
+        "name": "Didi B",
+        "alternateName": ["Diyilem", "Babi Style"],
+        "genre": ["Rap ivoirien", "Hip-hop"],
+        "foundingLocation": { "@type": "Place", "name": "Abidjan, Côte d'Ivoire" },
+        "album": [
+          { "@type": "MusicAlbum", "name": "Mojo Trône Vol. 1", "datePublished": "2013" },
+          { "@type": "MusicAlbum", "name": "Mojotrône II: History", "datePublished": "2022" },
+          { "@type": "MusicAlbum", "name": "Before Olympia", "datePublished": "2023" },
+          { "@type": "MusicAlbum", "name": "Diyilem & Bazarhoff: Genius", "datePublished": "2025" },
+          { "@type": "MusicAlbum", "name": "Juventus Nueva Era", "datePublished": "2026" }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

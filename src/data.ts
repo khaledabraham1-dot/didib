@@ -22,7 +22,7 @@ export const eras: Era[] = [
   { n: 1, year: "2013", title: "Mojo Trône", kicker: "Vol. 1", line: "Le premier trône. Kiff No Beat pose les fondations.", hue: "#7a5a2a" },
   { n: 2, year: "2022", title: "History", kicker: "Mojotrône II", line: "Le chapitre qui écrit l'histoire en lettres capitales.", hue: "#a8873f" },
   { n: 3, year: "2023", title: "Before Olympia", kicker: "Avant la scène", line: "Le souffle avant Paris.", hue: "#6b3a2a" },
-  { n: 4, year: "2025", title: "Genius", kicker: "Diyilem & Bazarhoff", line: "Deux faces, un seul génie.", hue: "#3b4a3a" },
+  { n: 4, year: "2025", title: "Genius", kicker: "Diyilem & Bazarhoff", line: "Deux faces, un seul génie.", hue: "#5a4128" },
   { n: 5, year: "2026", title: "Juventus Nueva Era", kicker: "Nouvelle ère", line: "Le règne continue. Une nouvelle génération.", hue: "#b3261e" },
 ];
 
@@ -30,7 +30,7 @@ export const eras: Era[] = [
 export const stages = [
   { date: "27.05.2022", place: "Palais de la Culture", city: "Abidjan", note: "Le palais, pour commencer." },
   { date: "04.02.2023", place: "Élysée Montmartre", city: "Paris", note: "Babi Style traverse la mer." },
-  { date: "—", place: "Stade Général Lansana Conté", city: "Conakry", note: "La Guinée au rendez-vous." },
+  { date: "Date à préciser", place: "Stade Général Lansana Conté", city: "Conakry", note: "La Guinée au rendez-vous." },
   { date: "03.05.2025", place: "Stade Félix Houphouët-Boigny", city: "Abidjan", note: "Plus de 30 000 places. Le Félicia rempli." },
   { date: "2025", place: "Stade de Bouaké", city: "Bouaké", note: "Le sacre continue au centre du pays." },
 ];
@@ -51,6 +51,22 @@ export const socials = [
   { name: "YouTube", href: "#" },
   { name: "Facebook", href: "#" },
 ];
+
+// Photos : Wikimedia Commons, licence CC BY-SA 4.0. Étalonnées en duotone laiton par SK DIGITAL
+// (les versions modifiées restent sous CC BY-SA 4.0). Le crédit est obligatoire : ne pas le retirer.
+const LICENSE = { name: "CC BY-SA 4.0", href: "https://creativecommons.org/licenses/by-sa/4.0/deed.fr" };
+const commons = (file: string) => `https://commons.wikimedia.org/wiki/File:${file}`;
+export const photos = {
+  hero: { alt: "Didi B sur scène au FEMUA, micro en main, bras levé sous les projecteurs", author: "BorisAhonon", source: commons("Image_de_DIDI_B_15%C3%A8me_%C3%A9dition_du_FEMUA_-_09.jpg") },
+  heroMobile: { alt: "Didi B chante sur scène au FEMUA, la tête levée vers les projecteurs", author: "BorisAhonon", source: commons("Image_de_DIDI_B_15%C3%A8me_%C3%A9dition_du_FEMUA_-_02.jpg") },
+  stage: { alt: "Didi B et ses danseurs sur la scène du FEMUA", author: "BorisAhonon", source: commons("Image_de_DIDI_B_15%C3%A8me_%C3%A9dition_du_FEMUA_-_23.jpg") },
+  femua: { alt: "Didi B en concert au FEMUA, faisceaux lumineux en arrière-plan", author: "BorisAhonon", source: commons("Image_de_DIDI_B_15%C3%A8me_%C3%A9dition_du_FEMUA_-_19.jpg") },
+  cotonou: { alt: "Didi B au micro au festival WeLoveEya 2025 à Cotonou", author: "Gildas Lissassi", source: commons("Didi_B_%C3%A0_WeLoveEya_2025_%C3%A0_Cotonou.jpg") },
+  regard: { alt: "Didi B assis, lunettes de soleil, regard tourné vers la droite", author: "Aristidek5maya", source: commons("Didi_B_02.jpg") },
+  portrait: { alt: "Portrait de Didi B, regard face à l'objectif", author: "Aristidek5maya", source: commons("Didi_B_01.jpg") },
+} as const;
+export const photoLicense = LICENSE;
+export const photoUrl = (name: string) => `${import.meta.env.BASE_URL}photos/${name}`;
 
 // Afficher la mention « concept » tant que le site n'est pas validé par l'équipe de l'artiste.
 export const SHOW_CONCEPT_NOTICE = true;

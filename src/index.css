@@ -17,6 +17,18 @@
   --font-sans: "Archivo Variable", system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
   --ease-throne: cubic-bezier(0.7, 0, 0.2, 1);
+
+  /* Échelle typographique : 5 tailles, pas une de plus */
+  --text-hero: clamp(96px, 27vw, 400px);
+  --text-hero--line-height: .78;
+  --text-stat: clamp(84px, 17vw, 260px);
+  --text-stat--line-height: .8;
+  --text-title: clamp(48px, 7vw, 112px);
+  --text-title--line-height: .9;
+  --text-subtitle: clamp(40px, 5.6vw, 88px);
+  --text-subtitle--line-height: .95;
+  --text-heading: clamp(28px, 3.4vw, 48px);
+  --text-heading--line-height: 1.05;
 }
 
 @layer base {
@@ -31,7 +43,7 @@
 @utility font-wide { font-stretch: 125%; }
 @utility font-narrow { font-stretch: 62%; }
 @utility label {
-  font-family: var(--font-mono); font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
 }
 @utility grain {
   position: relative;
