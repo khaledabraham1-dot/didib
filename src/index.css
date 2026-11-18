@@ -22,7 +22,7 @@
 @layer base {
   html { background: var(--color-obsidian); color: var(--color-ivory); -webkit-tap-highlight-color: transparent; }
   html.lenis, html { scroll-behavior: smooth; }
-  body { font-family: var(--font-sans); font-stretch: 100%; overflow-x: clip; -webkit-font-smoothing: antialiased; }
+  body { background: var(--color-obsidian); font-family: var(--font-sans); font-stretch: 100%; overflow-x: clip; -webkit-font-smoothing: antialiased; }
   ::selection { background: var(--color-brass); color: var(--color-obsidian); }
   :focus-visible { outline: 2px solid var(--color-brass); outline-offset: 3px; }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
