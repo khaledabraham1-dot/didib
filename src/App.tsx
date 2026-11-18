@@ -1,0 +1,32 @@
+import { Toaster } from "sonner";
+import { Loader } from "./components/Loader";
+import { Nav } from "./components/Nav";
+import { Hero } from "./components/Hero";
+import { Ticker } from "./components/Ticker";
+import { Eras } from "./components/Eras";
+import { Sacre } from "./components/Sacre";
+import { Story } from "./components/Story";
+import { Shop } from "./components/Shop";
+import { Cour } from "./components/Cour";
+import { Footer } from "./components/Footer";
+
+export default function App() {
+  return (
+    <>
+      <a href="#eres" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:bg-brass focus:px-4 focus:py-2 focus:text-obsidian">Aller au contenu</a>
+      <Loader />
+      <Nav />
+      <main>
+        <Hero />
+        <Ticker />
+        <Eras />
+        <Sacre />
+        <Story />
+        <Shop />
+        <Cour />
+      </main>
+      <Footer />
+      <Toaster position="bottom-center" toastOptions={{ style: { background: "#0b0a08", color: "#efe8da", border: "1px solid rgba(201,162,75,.4)", borderRadius: 0, fontFamily: "Archivo Variable" } }} />
+    </>
+  );
+}
